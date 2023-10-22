@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "Element Remover",
+    "description": "A Chrome extension that removes specified elements from a webpage.",
+    "version": "1.0",
+    "permissions": ["activeTab"],
+    "host_permissions": ["<all_urls>"],
+    "action": {
+        "default_popup": "index.html"
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["scripts/content.js"]
+      }
+    ]
+  }
