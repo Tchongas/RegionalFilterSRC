@@ -42,3 +42,44 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     restoreRemovedElements();
   }
 });
+
+
+
+function insertButton() {
+  // Create a new button element
+  var newButton = document.createElement('button');
+  newButton.setAttribute('type', 'button');
+  newButton.setAttribute('tabindex', '0');
+  newButton.className = 'x-input-button items-center rounded text-sm px-2.5 py-1.5 bg-input text-on-input border border-around-input hover:bg-input-hover disabled:bg-input w-32';
+  
+  // Create the SVG element
+
+  // Create the span element
+  var spanElement = document.createElement('span');
+  spanElement.textContent = 'Regional Filter';
+
+  // Append the SVG and span elements to the button
+  newButton.appendChild(spanElement);
+
+  // Select the specific div by its class
+  var targetDiv = document.querySelector('.contents.grow.flex-row.flex-wrap.items-center.justify-end.gap-2.sm\\:flex');
+
+  // Append the new button element to the target div
+  if (targetDiv) {
+    targetDiv.prepend(newButton);
+  } else {
+    console.error('Target div not found');
+  }
+}
+
+// Listen for the DOMContentLoaded event
+window.addEventListener('load', function() {
+  insertButton();
+});
+
+// Listen for messages from the popup
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.action === 'insert_button') {
+    insertButton();
+  }
+});
