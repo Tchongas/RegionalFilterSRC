@@ -1,7 +1,7 @@
 // content.js
 
-// Store the initial state of the webpage
-var initialPageState = document.documentElement.outerHTML;
+// Store the removed elements
+var removedElements = [];
 
 // Function to remove specific TR elements
 function removeCertainTRs(imageFilter) {
@@ -17,7 +17,8 @@ function removeCertainTRs(imageFilter) {
           // Check for specific classes
           var tdClasses = secondTd.className;
           if (tdClasses.includes("cursor-pointer") && tdClasses.includes("sticky") && tdClasses.includes("z-[4]") && tdClasses.includes("px-0.5") && tdClasses.includes("text-left")) {
-            tr.parentNode.removeChild(tr);
+            removedElements.push(tr);
+            tr.style.display = 'none';
           }
         }
       }
@@ -25,18 +26,19 @@ function removeCertainTRs(imageFilter) {
   });
 }
 
-// Function to restore the initial state of the webpage
-function restorePageState() {
-  document.open();
-  document.write(initialPageState);
-  document.close();
+// Function to restore the removed elements
+function restoreRemovedElements() {
+  removedElements.forEach(function(element) {
+    element.style.display = 'table-row';
+  });
+  removedElements = [];
 }
 
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === 'remove_elements') {
     removeCertainTRs(request.imageFilter);
-  } else if (request.action === 'restore_page_state') {
-    restorePageState();
+  } else if (request.action === 'undo_delete') {
+    restoreRemovedElements();
   }
 });
