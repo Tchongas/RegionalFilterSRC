@@ -79,7 +79,7 @@ function insertButton() {
     console.log('nutton clicked');
     
     let text;
-    let country = prompt("Please enter the country", "Example: br, us, cn, gb, pl...");
+    let country = prompt("Please enter the Country Code, leave blank to reset ", "Example: BR, US, CN, GB, PL...");
     if (country == null || country == "") {
       restoreRemovedElements()
     } else {
