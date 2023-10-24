@@ -50,13 +50,16 @@ function insertButton() {
   var newButton = document.createElement('button');
   newButton.setAttribute('type', 'button');
   newButton.setAttribute('tabindex', '0');
+  newButton.style.border = '2px solid gold';
+  newButton.style.color = 'gold';
   newButton.className = 'x-input-button items-center rounded text-sm px-2.5 py-1.5 bg-input text-on-input border border-around-input hover:bg-input-hover disabled:bg-input w-32';
-  
+
+  newButton.id = 'regionalFilter'
   // Create the SVG element
 
   // Create the span element
   var spanElement = document.createElement('span');
-  spanElement.textContent = 'Regional Filter';
+  spanElement.textContent = 'Country Filter';
 
   // Append the SVG and span elements to the button
   newButton.appendChild(spanElement);
@@ -70,12 +73,22 @@ function insertButton() {
   } else {
     console.error('Target div not found');
   }
-}
 
-// Listen for the DOMContentLoaded event
-window.addEventListener('load', function() {
-  insertButton();
-});
+
+  newButton.addEventListener('click', function() {
+    console.log('nutton clicked');
+    
+    let text;
+    let country = prompt("Please enter the country", "Example: br, us, cn, gb, pl...");
+    if (country == null || country == "") {
+      restoreRemovedElements()
+    } else {
+      text = country.toLowerCase();
+      restoreRemovedElements()
+      removeCertainTRs(text)
+    }
+  });
+}
 
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -83,3 +96,24 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     insertButton();
   }
 });
+
+
+// Function to insert a button element into the specific div in the webpage
+function insertButtonIfNeeded() {
+  const regionalFilterButton = document.getElementById('regionalFilter');
+  if (!regionalFilterButton) {
+    insertButton();
+  }
+}
+
+// Create a new MutationObserver instance
+const observer = new MutationObserver(function(mutationsList, observer) {
+  for (let mutation of mutationsList) {
+    if (mutation.type === 'childList') {
+      insertButtonIfNeeded();
+    }
+  }
+});
+
+// Start observing the <body> node for childList changes
+observer.observe(document.body, { childList: true, subtree: true });
