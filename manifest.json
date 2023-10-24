@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "Element Remover",
-    "description": "A Chrome extension that removes specified elements from a webpage.",
+    "name": "SRC Country Filter",
+    "description": "A extension that can filter runs by flag",
     "version": "1.0",
     "permissions": ["activeTab"],
     "host_permissions": ["<all_urls>"],
