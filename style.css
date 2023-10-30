@@ -1,0 +1,29 @@
+body {
+    background-color: rgb(0, 0, 0);
+    color: aliceblue;
+    width: 300px;
+    height: 200px;
+    padding: 10px;
+    text-align: center;
+    border: none;
+}
+
+.popup-btn {
+    border-radius: 3px;
+    border: none;
+    margin: 5px;
+    font-size: large;
+    font-weight: 600;
+    background-color: aliceblue;
+}
+
+.popup-btn:hover {
+    background-color: rgb(184, 191, 197);
+}
+
+.country-input {
+    border: none;
+    border-radius: 2px;
+    padding: 2px;
+    
+}
