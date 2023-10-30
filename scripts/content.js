@@ -1,9 +1,6 @@
-// content.js
 
-// Store the removed elements
 var removedElements = [];
 
-// Function to remove specific TR elements
 function removeCertainTRs(imageFilter) {
   var trElements = document.querySelectorAll('tr');
   trElements.forEach(function(tr) {
@@ -26,7 +23,7 @@ function removeCertainTRs(imageFilter) {
   });
 }
 
-// Function to restore the removed elements
+//restore the removed elements
 function restoreRemovedElements() {
   removedElements.forEach(function(element) {
     element.style.display = 'table-row';
@@ -46,7 +43,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 
 function insertButton() {
-  // Create a new button element
+  
   var newButton = document.createElement('button');
   newButton.setAttribute('type', 'button');
   newButton.setAttribute('tabindex', '0');
@@ -55,23 +52,16 @@ function insertButton() {
   newButton.className = 'x-input-button items-center rounded text-sm px-2.5 py-1.5 bg-input text-on-input border border-around-input hover:bg-input-hover disabled:bg-input w-32';
 
   newButton.id = 'regionalFilter'
-  // Create the SVG element
 
-  // Create the span element
   var spanElement = document.createElement('span');
   spanElement.textContent = 'Country Filter';
 
-  // Append the SVG and span elements to the button
   newButton.appendChild(spanElement);
 
-  // Select the specific div by its class
   var targetDiv = document.querySelector('.contents.grow.flex-row.flex-wrap.items-center.justify-end.gap-2.sm\\:flex');
 
-  // Append the new button element to the target div
   if (targetDiv) {
     targetDiv.prepend(newButton);
-  } else {
-    console.error('Target div not found');
   }
 
 
@@ -79,8 +69,8 @@ function insertButton() {
     console.log('nutton clicked');
     
     let text;
-    let country = prompt("Please enter the Country Code, leave blank to reset ", "Example: BR, US, CN, GB, PL...");
-    if (country == null || country == "") {
+    let country = prompt("Please enter a Country Code, or leave it blank to reset the leaderboard", "Example: BR, US, CN, GB, PL...");
+    if (country == null || country == "" || country == "Example: BR, US, CN, GB, PL...") {
       restoreRemovedElements()
     } else {
       text = country.toLowerCase();
