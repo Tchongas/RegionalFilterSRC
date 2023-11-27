@@ -35,9 +35,28 @@ function restoreRemovedElements() {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === 'remove_elements') {
     removeCertainTRs(request.imageFilter);
-  } else if (request.action === 'undo_delete') {
+    console.log(request.imageFilter)
+
+  } 
+
+  else if (request.action === 'undo_delete') {
     restoreRemovedElements();
-  }
+  } 
+
+  else if (request.action === 'get_queue') {
+    var url = window.location.href;
+    var gameAbbr;
+    if (url.indexOf("?") !== -1) {
+        gameAbbr = url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
+    } else {
+        gameAbbr = url.substring(url.lastIndexOf("/") + 1);
+        console.log("1");
+    }
+    console.log(gameAbbr);
+    console.log("2");
+    console.log(request.queueOptionStart);
+    get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd)
+  } 
 });
 
 
@@ -80,6 +99,53 @@ function insertButton() {
   });
 }
 
+
+function insertQueueButton() {
+  
+  var newButton = document.createElement('button');
+  newButton.setAttribute('type', 'button');
+  newButton.setAttribute('tabindex', '0');
+  newButton.style.border = '2px solid red';
+  newButton.style.color = 'red';
+  newButton.className = 'x-input-button items-center rounded text-sm px-2.5 py-1.5 bg-input text-on-input border border-around-input hover:bg-input-hover disabled:bg-input w-32';
+
+  newButton.id = 'queueBtn'
+
+  var spanElement = document.createElement('span');
+  spanElement.textContent = 'View Queue';
+
+  newButton.appendChild(spanElement);
+
+  var targetDiv = document.querySelector('.contents.grow.flex-row.flex-wrap.items-center.justify-end.gap-2.sm\\:flex');
+
+  if (targetDiv) {
+    targetDiv.prepend(newButton);
+  }
+
+
+  newButton.addEventListener('click', function(request, sender, sendResponse) {
+    console.log('queue button clicked');
+    var url = window.location.href;
+    var gameAbbr;
+    if (url.indexOf("?") !== -1) {
+        gameAbbr = url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
+    } else {
+        gameAbbr = url.substring(url.lastIndexOf("/") + 1);
+    }
+    console.log(gameAbbr);
+
+    get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd)
+    
+
+  });
+}
+
+
+
+
+
+
+
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === 'insert_button') {
@@ -93,6 +159,7 @@ function insertButtonIfNeeded() {
   const regionalFilterButton = document.getElementById('regionalFilter');
   if (!regionalFilterButton) {
     insertButton();
+    insertQueueButton()
   }
 }
 

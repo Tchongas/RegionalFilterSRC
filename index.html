@@ -3,12 +3,43 @@
 <link rel="stylesheet" href="style.css">
 <html>
   <body>
-    <h1>SRC Country Filter</h1>
-    <p>Please enter a Country Code</p>
-    <input type="text" id="imageFilterInput" placeholder="br, us, gb, pl..." class="country-input">
-    <button id="removeElementsButton" class="popup-btn">Filter</button>
-    <button id="undoButton" class="popup-btn">Reset</button>
-    <p style="padding: 15px;">You can also use the Country filter button on the leaderboard page!</p>
+    <div class="title-container d-flex justify-content-center">
+      <h1 style=" font-weight: bold; font-size: 50px;"><span style="color: gold;">SRC</span>++</h1>
+    </div>
+
+    <div class="country-container">
+      <div>
+        <p style="font-weight: bold; font-size: 20px;">Country Filter</p>
+      </div>
+      <div>
+        <span>Country code:</span>
+        <input type="text" id="imageFilterInput" placeholder="br, us, gb, pl..." class="text-input"  style="width: 30%;">
+      </div>
+      <div>
+        <button id="removeElementsButton" class="popup-btn">Filter</button>
+        <button id="undoButton" class="popup-btn">Reset</button>
+      </div>
+      
+    </div>
+    <div>
+      <div>
+        <p style="font-weight: bold; font-size: 20px;">View the game Queue</p>
+        <div>
+          <span>Start on:</span><input type="number" id="start-queue-input" placeholder="0" class="start-queue-input text-input" style="width: 15%;">
+          <span>End on:</span><input type="number" id="end-queue-input" placeholder="100" class="end-queue-input text-input"  style="width: 15%;">
+        </div>
+        <button id="queue" class="popup-btn popup-btn-large">View Queue</button>
+      </div>
+    </div>
+    <div class="foot">
+      <p style="padding: 15px;">You can use the buttons on the leaderboard page!</p>
+    </div>
+    
+
     <script src="./popup/popup.js"></script>
   </body>
+
+
 </html>
+
+

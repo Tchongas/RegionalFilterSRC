@@ -1,30 +1,62 @@
 body {
-    background-image: url("https://pm1.narvii.com/7224/65b34c94e07e37ffd55829b8117974f43aa84c19r1-713-713v2_uhq.jpg");
+    background-color: #191C1B;
     background-size: 300px 200px;
     color: aliceblue;
-    width: 300px;
-    height: 200px;
-    padding: 10px;
+    width: 400px;
+    height: 500px;
     text-align: center;
-    border: none;
 }
 
 .popup-btn {
-    border-radius: 3px;
+    width: 120px;
+    height: 40px;
+    border-radius: 5px;
     border: none;
     margin: 5px;
     font-size: large;
     font-weight: 600;
-    background-color: aliceblue;
+    background-color:#aefcae
+}
+
+.popup-btn-large {
+    width: 250px;
 }
 
 .popup-btn:hover {
     background-color: rgb(184, 191, 197);
 }
 
-.country-input {
+.text-input {
+    background-color: black;
+    outline: 2px solid rgb(78, 83, 78);
     border: none;
-    border-radius: 2px;
-    padding: 2px;
+    border-radius: 6px;
+    margin: 5px;
+    padding: 5px;
+    font-weight: 600;
+    color: white;
+}
+
+
+.text-input::placeholder {
+    color: rgb(194, 194, 194);
+}
+
+.country-container {
+    margin-bottom: 30px;
+    border-radius: 10px;
     
+}
+
+.title-container{
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #171917;
+    outline: 2px solid rgb(78, 83, 78);
+}
+
+.foot {
+    bottom: 0;
+    position: absolute;
+    margin-bottom: 10px;
 }
