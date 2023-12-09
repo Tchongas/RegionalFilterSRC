@@ -104,45 +104,54 @@ const HEADER = "https://www.speedrun.com/api/v1/";
         }
         
         document.getElementsByTagName('tbody')[0].innerHTML = `<tr class="cursor-pointer x-focus-inner whitespace-nowrap" tabindex="0">
-    <td class="sticky left-0 z-[4]"><a class="px-1.5 py-1" tabindex="-1" href="">
-      <span class="inline-flex flex-nowrap items-center justify-start gap-1"><div class="relative h-4 w-4" data-state="closed">
-      </div>
-    </span>
-  </a>
-  </td>
-  <td class="cursor-pointer sticky z-[4] px-0.5 text-left" style="left:var(--cell-0-width)">
-    <div class="whitespace-normal py-1"><span><div class="inline-flex flex-row flex-wrap items-center justify-start">
-      <div class="inline-flex min-w-0 items-center align-middle"><a class="x-username x-username-gradient x-focus-inner" style="color:#edfafa;--username-gradient-from:#edfafa;--username-gradient-to:#edfafa" href="">
-        
-        <span style="font-size:15px">Loading Queue</span>
-      </a>
-    </div>
-  </div>
-  </span>
-  </div>
-  </td
-  ><td class="text-secondary">
-    <div class="flex flex-row flex-nowrap items-center justify-end gap-x-0.5 px-0.5 py-1">
-      <button type="button" class="cursor-pointer" tabindex="-1">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="pointer-events-none w-4">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z"></path>
-        </svg>
-      </button>
-    </div>
-  </td>
-  <td>
-    <a class="px-1.5 py-1" tabindex="-1" href="">
-      <span>
-        <span>
-          <span>
-
-            <span style="font-size:15px">For game: ${abbr}</span></span></span></span></span></a></td>
-
-            <td><a class="px-1.5 py-1" tabindex="-1" href="">
+        <td class="sticky left-0 z-[4]">
+          <a class="px-1.5 py-1" tabindex="-1" href="">
+            <span class="inline-flex flex-nowrap items-center justify-start gap-1">
+              <span>#</span>
+            </span>
+          </a>
+        </td>
+        <td class="cursor-pointer sticky z-[4] px-0.5 text-left" style="left:var(--cell-0-width)">
+          <div class="whitespace-normal py-1">
+            <span>
+              <div class="inline-flex flex-row flex-wrap items-center justify-start">
+                <div class="inline-flex min-w-0 items-center align-middle">
+                  <a class="x-username x-username-popover x-focus-outline-offset" style="color:#edfafa;--username-gradient-from:#edfafa;--username-gradient-to:#edfafa" href="">
+                    <span>Loading Queue</span>
+                  </a>
+                </div>
+              </div>
+            </span>
+          </div>
+        </td>
+        <td class="text-secondary">
+          <div class="flex flex-row flex-nowrap items-center justify-end gap-x-0.5 px-0.5 py-1">
+            <button type="button" class="cursor-pointer" tabindex="-1">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="pointer-events-none w-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z">
+      
+                </path>
+              </svg>
+            </button>
+          </div>
+        </td>
+        <td>
+          <a class="px-1.5 py-1" tabindex="-1" href="">
+            <span>
               <span>
                 <span>
-                  <span>
-                    <span style="font-size:15px" id="runsInQueue">Please Wait</span></span></span></span></a></td><td><a class="px-1.5 py-1" tabindex="-1" href=""><span></span></a></td></tr>`;
+                  <span>For game: ${abbr}</span>
+                </span>
+              </span>
+            </span>
+          </a>
+        </td>
+        <td>
+          <a class="px-1.5 py-1" tabindex="-1" href="">
+            <span>Please Wait</span>
+          </a>
+        </td>
+      </tr>`;
         try {
           var gameObj = await json_from_src_await(`games/${abbr}`);
         }
@@ -299,71 +308,108 @@ const HEADER = "https://www.speedrun.com/api/v1/";
 
           if (index == endPoint) {
             output += `<tr class="cursor-pointer x-focus-inner whitespace-nowrap" tabindex="0">
-            <td class="sticky left-0 z-[4]"><a class="px-1.5 py-1" tabindex="-1">
-              <span class="inline-flex flex-nowrap items-center justify-start gap-1"><span>X</span><div class="relative h-4 w-4" data-state="closed">
-              </div>
-            </span>
-          </a>
-          </td>
-          <td class="cursor-pointer sticky z-[4] px-0.5 text-left" style="left:var(--cell-0-width)">
-            <div class="whitespace-normal py-1"><span><div class="inline-flex flex-row flex-wrap items-center justify-start">
-              <div class="inline-flex min-w-0 items-center align-middle"><a class="x-username x-username-gradient x-focus-inner" style="color:#f8fc03;--username-gradient-from:#f8fc03;--username-gradient-to:#f8fc03">
-                
-                <span>END REACHED</span>
+            <td class="sticky left-0 z-[4]">
+              <a class="px-1.5 py-1" tabindex="-1" href="">
+                <span class="inline-flex flex-nowrap items-center justify-start gap-1">
+                  <span>X</span>
+                </span>
               </a>
-            </div>
-          </div>
-          </span>
-          </div>
-          </td
-          >
-          <td class="text-secondary">
-          </td>
-          <td>
-            <a class="px-1.5 py-1" tabindex="-1">
-              <span>
+            </td>
+            <td class="cursor-pointer sticky z-[4] px-0.5 text-left" style="left:var(--cell-0-width)">
+              <div class="whitespace-normal py-1">
+                <span>
+                  <div class="inline-flex flex-row flex-wrap items-center justify-start">
+                    <div class="inline-flex min-w-0 items-center align-middle">
+                      <a class="x-username x-username-popover x-focus-outline-offset" style="color:#ff5454;--username-gradient-from:#ff5454;--username-gradient-to:#ff5454" href="">
+                        <span>END REACHED</span>
+                      </a>
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </td>
+            <td class="text-secondary">
+              <div class="flex flex-row flex-nowrap items-center justify-end gap-x-0.5 px-0.5 py-1">
+                <button type="button" class="cursor-pointer" tabindex="-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="pointer-events-none w-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z">
+          
+                    </path>
+                  </svg>
+                </button>
+              </div>
+            </td>
+            <td>
+              <a class="px-1.5 py-1" tabindex="-1" href="">
                 <span>
                   <span>
-                    <span>See more in the Extension popup</span></span></span></span></span></a></td>
-                    <td><a class="px-1.5 py-1" tabindex="-1">
-                      <span>
-                        <span>
-                          <span>
-                            <span</span></span></span></span></a></td><td><a class="px-1.5 py-1" tabindex="-1"><span><span class="x-timestamp" data-state="closed"></span></span></a></td><td><a class="px-1.5 py-1" tabindex="-1" ><span class="inline-flex flex-nowrap items-center gap-1"></span></a></td><td><a class="px-1.5 py-1" tabindex="-1" href="/portal/runs/zqj8459m"><span></span></a></td><td><a class="px-1.5 py-1" tabindex="-1"><span></span></a></td></tr>`;
+                    <span>
+                      <span>Open the popup for more</span>
+                    </span>
+                  </span>
+                </span>
+              </a>
+            </td>
+            <td>
+              <a class="px-1.5 py-1" tabindex="-1" href="">
+                <span></span>
+              </a>
+            </td>
+          </tr>`;
             document.getElementsByTagName('tbody')[0].innerHTML = output;
             output = ``;
             return
           } 
 
           output += `<tr class="cursor-pointer x-focus-inner whitespace-nowrap" tabindex="0">
-          <td class="sticky left-0 z-[4]"><a class="px-1.5 py-1" tabindex="-1" href="${run.weblink.replace("http://", "https://")}">
-            <span class="inline-flex flex-nowrap items-center justify-start gap-1"><span>${index}</span><div class="relative h-4 w-4" data-state="closed">
-            </div>
-          </span>
-        </a>
-        </td>
-        <td class="cursor-pointer sticky z-[4] px-0.5 text-left" style="left:var(--cell-0-width)">
-          <div class="whitespace-normal py-1"><span><div class="inline-flex flex-row flex-wrap items-center justify-start">
-            <div class="inline-flex min-w-0 items-center align-middle"><a class="x-username x-username-gradient x-focus-inner" style="color:#ff5454;--username-gradient-from:#ff5454;--username-gradient-to:#ff5454" href="${run.weblink.replace("http://", "https://")}">
-              
-              <span>${players(run)}</span>
+          <td class="sticky left-0 z-[4]">
+            <a class="px-1.5 py-1" tabindex="-1" href="${run.weblink.replace("http://", "https://")}">
+              <span class="inline-flex flex-nowrap items-center justify-start gap-1">
+                <span>${index}</span>
+              </span>
             </a>
-          </div>
-        </div>
-        </span>
-        </div>
-        </td>
-        <td>
-          <a class="px-1.5 py-1" tabindex="-1" href="${run.weblink.replace("http://", "https://")}">
-            <span>
+          </td>
+          <td class="cursor-pointer sticky z-[4] px-0.5 text-left" style="left:var(--cell-0-width)">
+            <div class="whitespace-normal py-1">
+              <span>
+                <div class="inline-flex flex-row flex-wrap items-center justify-start">
+                  <div class="inline-flex min-w-0 items-center align-middle">
+                    <a class="x-username x-username-popover x-focus-outline-offset" style="color:#ff5454;--username-gradient-from:#ff5454;--username-gradient-to:#ff5454" href="${run.weblink.replace("http://", "https://")}">
+                      <span>${players(run)}</span>
+                    </a>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </td>
+          <td class="text-secondary">
+            <div class="flex flex-row flex-nowrap items-center justify-end gap-x-0.5 px-0.5 py-1">
+              <button type="button" class="cursor-pointer" tabindex="-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="pointer-events-none w-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z">
+        
+                  </path>
+                </svg>
+              </button>
+            </div>
+          </td>
+          <td>
+            <a class="px-1.5 py-1" tabindex="-1" href="${run.weblink.replace("http://", "https://")}">
               <span>
                 <span>
-                  <span>${primary_time(run)} // ${run.date}</span></span></span></span></span></a></td>
-                  <td><a class="px-1.5 py-1" tabindex="-1" href="${run.weblink.replace("http://", "https://")}">
-                    <span>
-                      <span>
-                        <span>
-                          <span>${full_category(run)}</span></span></span></span></a></td><td><a class="px-1.5 py-1" tabindex="-1" href="${run.weblink.replace("http://", "https://")}"><span><span class="x-timestamp" data-state="closed"></span></span></a></td><td><a class="px-1.5 py-1" tabindex="-1" href="${run.weblink.replace("http://", "https://")}"><span class="inline-flex flex-nowrap items-center gap-1"></span></a></td><td><a class="px-1.5 py-1" tabindex="-1" href="/portal/runs/zqj8459m"><span></span></a></td><td><a class="px-1.5 py-1" tabindex="-1" href="${run.weblink.replace("http://", "https://")}"><span></span></a></td></tr>`;
+                  <span>
+                    <span>${primary_time(run)} // ${run.date}</span>
+                  </span>
+                </span>
+              </span>
+            </a>
+          </td>
+          <td>
+            <a class="px-1.5 py-1" tabindex="-1" href="${run.weblink.replace("http://", "https://")}">
+              <span>${full_category(run)}</span>
+            </a>
+          </td>
+        </tr>`;
                           
                     
         }
