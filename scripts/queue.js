@@ -485,12 +485,7 @@ const HEADER = "https://www.speedrun.com/api/v1/";
             
             let colorL = name_style.color.light;
             let colorD = name_style.color.dark;
-            var display_name = `<span class="xlight ">` +
-                                 escape(user_name) +
-                               `</span>` +
-                               `<span class="xdark">` +
-                                 +
-                               `</span>`;
+            var display_name = `<span class="xlight ">` + escape(user_name) + `</span>` + `<span class="xdark">` +`</span>`;
           }
 
           display_name = `<b>${display_name}</b>`;
