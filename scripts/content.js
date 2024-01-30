@@ -1,5 +1,5 @@
-
 var removedElements = [];
+
 
 function removeCertainTRs(imageFilter) {
   var trElements = document.querySelectorAll('tr');
@@ -41,6 +41,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
   else if (request.action === 'undo_delete') {
     restoreRemovedElements();
+  }
+
+  else if (request.action === 'remove_sidebar') {
+    removeSections();
   } 
 
   else if (request.action === 'get_queue') {
@@ -58,6 +62,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd)
   } 
 });
+
+
+
+
+
 
 
 
@@ -100,6 +109,7 @@ function insertButton() {
 }
 
 
+
 function insertQueueButton() {
   
   var newButton = document.createElement('button');
@@ -139,6 +149,10 @@ function insertQueueButton() {
 
   });
 }
+
+
+
+
 
 
 
