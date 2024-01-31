@@ -44,7 +44,6 @@ body {
 .country-container {
     margin-bottom: 30px;
     border-radius: 10px;
-    
 }
 
 .title-container{
@@ -52,4 +51,8 @@ body {
     margin-bottom: 10px;
     background-color: #171917;
     outline: 2px solid rgb(78, 83, 78);
+}
+
+.small-text {
+    color: rgb(214, 214, 214);
 }

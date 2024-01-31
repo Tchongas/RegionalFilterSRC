@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var StartQueueInput = document.getElementById('start-queue-input');
   var EndQueueInput = document.getElementById('end-queue-input');
   var sidebarCheckBox = document.getElementById('sidebarCheckBox');
+  var sidebarWarn = document.getElementById('sidebarWarn');
 
   removeElementsButton.addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
@@ -33,9 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   chrome.storage.local.get(["sidebar"]).then((result) => {
-    console.log("Value is " + result.sidebar);
     if(result.sidebar === "off") {
       sidebarCheckBox.checked = true;
+      return
     }
   });
   
