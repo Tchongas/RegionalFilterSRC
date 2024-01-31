@@ -1,7 +1,15 @@
 var removedElements = [];
 
+chrome.storage.local.get(["sidebar"]).then((result) => {
+  console.log("Value is " + result.sidebar);
+  if(result.sidebar === "off") {
+    removeSections()
+  }
+});
+
 
 function removeCertainTRs(imageFilter) {
+
   var trElements = document.querySelectorAll('tr');
   trElements.forEach(function(tr) {
     var imgElement = tr.querySelector('img[src="' + imageFilter + '.png"]');

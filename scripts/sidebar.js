@@ -18,6 +18,9 @@ function removeSections() {
         console.log('No matching divs found.');
     }
 
+    chrome.storage.local.set({ sidebar: "off" }).then(() => {
+        console.log("sidebar is off");
+      });
 
 
 
