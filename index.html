@@ -18,11 +18,11 @@
       <div>
         <button id="removeElementsButton" class="popup-btn">Filter</button>
         <button id="undoButton" class="popup-btn">Reset</button>
-        <button id="sidebarButton" class="popup-btn">Sidbar</button>
+        
       </div>
       
     </div>
-    <div>
+    <div class="country-container">
       <div>
         <p style="font-weight: bold; font-size: 20px;">View the game Queue</p>
         <div>
@@ -32,9 +32,18 @@
         <button id="queue" class="popup-btn popup-btn-large">View Queue</button>
       </div>
     </div>
-    <div class="foot">
-      <p style="padding: 15px;">You can use the buttons on the leaderboard page!</p>
+
+    <div>
+      <div>
+        <p style="font-weight: bold; font-size: 20px;">Layout Options</p>
+        <div>
+          <input type="checkbox" id="sidebarCheckBox" name="sidebarCheckBox" value="Remove Sidebar">
+          <label for="sidebarCheckBox">Remove sidebar</label><br>
+        </div>
+      </div>
     </div>
+
+
     
 
     <script src="./popup/popup.js"></script>

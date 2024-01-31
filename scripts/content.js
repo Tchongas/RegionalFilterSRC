@@ -39,6 +39,7 @@ function restoreRemovedElements() {
   removedElements = [];
 }
 
+
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === 'remove_elements') {
@@ -51,9 +52,19 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     restoreRemovedElements();
   }
 
+
   else if (request.action === 'remove_sidebar') {
-    removeSections();
+    chrome.storage.local.get(["sidebar"]).then((result) => {
+      if(result.sidebar === "off") {
+        chrome.storage.local.set({ sidebar: "on" }).then(() => {
+          console.log("sidebar is on");
+        });
+        return
+      }
+      removeSections()
+    });
   } 
+
 
   else if (request.action === 'get_queue') {
     var url = window.location.href;
@@ -185,14 +196,21 @@ function insertButtonIfNeeded() {
   }
 }
 
+
 // Create a new MutationObserver instance
 const observer = new MutationObserver(function(mutationsList, observer) {
   for (let mutation of mutationsList) {
+    console.log("mutation")
     if (mutation.type === 'childList') {
       insertButtonIfNeeded();
     }
   }
+  chrome.storage.local.get(["sidebar"]).then((result) => {
+    if(result.sidebar === "off") {
+      removeSections()
+    }
+  });
 });
-
 // Start observing the <body> node for childList changes
-observer.observe(document.body, { childList: true, subtree: true });
+observer.observe(document.head, { childList: true, subtree: true });
+

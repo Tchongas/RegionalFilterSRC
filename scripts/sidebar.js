@@ -13,13 +13,9 @@ function removeSections() {
         desiredDivs.forEach(function(div) {
             div.style.display = 'none';
         });
-        console.log(desiredDivs);
     } else {
-        console.log('No matching divs found.');
     }
-
-    chrome.storage.local.set({ sidebar: "off" }).then(() => {
-        console.log("sidebar is off");
+    chrome.storage.local.set({ sidebar: "off" }).then(() => {;
       });
 
 

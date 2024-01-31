@@ -1,9 +1,8 @@
 body {
     background-color: #191C1B;
-    background-size: 300px 200px;
     color: aliceblue;
     width: 400px;
-    height: 500px;
+    height: 600px;
     text-align: center;
 }
 
@@ -53,10 +52,4 @@ body {
     margin-bottom: 10px;
     background-color: #171917;
     outline: 2px solid rgb(78, 83, 78);
-}
-
-.foot {
-    bottom: 0;
-    position: absolute;
-    margin-bottom: 10px;
 }

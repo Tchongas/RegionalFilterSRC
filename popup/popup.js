@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var imageFilterInput = document.getElementById('imageFilterInput');
   var StartQueueInput = document.getElementById('start-queue-input');
   var EndQueueInput = document.getElementById('end-queue-input');
-  var sidebarButton = document.getElementById('sidebarButton');
+  var sidebarCheckBox = document.getElementById('sidebarCheckBox');
 
   removeElementsButton.addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
@@ -27,9 +27,16 @@ document.addEventListener('DOMContentLoaded', function() {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'get_queue', queueOptionStart: StartQueueInput.value, queueOptionEnd: EndQueueInput.value });
     });
   });
-  sidebarButton.addEventListener('click', function() {
+  sidebarCheckBox.addEventListener('change', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'remove_sidebar' });
     });
   });
+  chrome.storage.local.get(["sidebar"]).then((result) => {
+    console.log("Value is " + result.sidebar);
+    if(result.sidebar === "off") {
+      sidebarCheckBox.checked = true;
+    }
+  });
+  
 });
