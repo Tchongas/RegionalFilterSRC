@@ -200,7 +200,6 @@ function insertButtonIfNeeded() {
 // Create a new MutationObserver instance
 const observer = new MutationObserver(function(mutationsList, observer) {
   for (let mutation of mutationsList) {
-    console.log("mutation")
     if (mutation.type === 'childList') {
       insertButtonIfNeeded();
     }
@@ -212,5 +211,5 @@ const observer = new MutationObserver(function(mutationsList, observer) {
   });
 });
 // Start observing the <body> node for childList changes
-observer.observe(document.head, { childList: true, subtree: true });
+observer.observe(document.querySelector('title'), { childList: true });
 
