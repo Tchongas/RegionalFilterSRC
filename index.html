@@ -3,13 +3,13 @@
 <link rel="stylesheet" href="style.css">
 <html>
   <body>
-    <div class="title-container d-flex justify-content-center">
+    <div class="title-container d-flex flex-column justify-content-center">
       <h1 style=" font-weight: bold; font-size: 50px;"><span style="color: gold;">SRC</span>++</h1>
     </div>
 
     <div class="country-container">
       <div>
-        <p style="font-weight: bold; font-size: 20px;">Country Filter</p>
+        <p style="font-weight: bold; font-size: 30px;">Country Filter</p>
       </div>
       <div>
         <span>Country code:</span>
@@ -24,7 +24,7 @@
     </div>
     <div class="country-container">
       <div>
-        <p style="font-weight: bold; font-size: 20px;">View the game Queue</p>
+        <p style="font-weight: bold; font-size: 30px;">View the game Queue</p>
         <div>
           <span>Start on:</span><input type="number" id="start-queue-input" placeholder="0" class="start-queue-input text-input" style="width: 15%;">
           <span>End on:</span><input type="number" id="end-queue-input" placeholder="100" class="end-queue-input text-input"  style="width: 15%;">
@@ -35,13 +35,14 @@
 
     <div class="country-container">
       <div>
-        <p style="font-weight: bold; font-size: 20px;">Layout Options</p>
+        <p style="font-weight: bold; font-size: 30px;">Layout Options</p>
         <div>
-
-          <label for="sidebarCheckBox">Remove sidebar</label>
+          <label class="layout-label" for="sidebarCheckBox">Remove sidebar</label>
           <input type="checkbox" id="sidebarCheckBox" name="sidebarCheckBox" value="Remove Sidebar"><br>
+          <div class="small-text">
+            <span id="sidebarWarn" class="small-text">You will need to refresh the page to make it re-appear</span>
+          </div>
           
-          <span id="sidebarWarn" class="small-text">You will need to refresh the page to make it re-appear</span>
         </div>
       </div>
     </div>

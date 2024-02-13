@@ -1,3 +1,5 @@
+insertButtonIfNeeded();
+
 var removedElements = [];
 
 chrome.storage.local.get(["sidebar"]).then((result) => {
@@ -6,6 +8,7 @@ chrome.storage.local.get(["sidebar"]).then((result) => {
     removeSections()
   }
 });
+
 
 
 function removeCertainTRs(imageFilter) {
@@ -199,11 +202,8 @@ function insertButtonIfNeeded() {
 
 // Create a new MutationObserver instance
 const observer = new MutationObserver(function(mutationsList, observer) {
-  for (let mutation of mutationsList) {
-    if (mutation.type === 'childList') {
-      insertButtonIfNeeded();
-    }
-  }
+    insertButtonIfNeeded();
+
   chrome.storage.local.get(["sidebar"]).then((result) => {
     if(result.sidebar === "off") {
       removeSections()

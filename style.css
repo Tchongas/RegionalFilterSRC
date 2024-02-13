@@ -54,5 +54,20 @@ body {
 }
 
 .small-text {
-    color: rgb(214, 214, 214);
+    color: rgb(189, 189, 189);
+    width: 340px;
+    font-size: 14px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#sidebarCheckBox {
+    height: 15px;
+    width: 15px;
+    background-color: #eee;
+}
+
+.layout-label{
+    font-size: 18px;
 }
