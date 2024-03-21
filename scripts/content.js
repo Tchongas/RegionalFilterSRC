@@ -190,7 +190,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 
-
+// Function to insert a button element into the specific div in the webpage
 function insertButtonIfNeeded() {
   const regionalFilterButton = document.getElementById('regionalFilter');
   if (!regionalFilterButton) {
@@ -200,7 +200,7 @@ function insertButtonIfNeeded() {
 }
 
 
-
+// Create a new MutationObserver instance
 const observer = new MutationObserver(function(mutationsList, observer) {
     insertButtonIfNeeded();
 
@@ -210,6 +210,6 @@ const observer = new MutationObserver(function(mutationsList, observer) {
     }
   });
 });
-
+// Start observing the <body> node for childList changes
 observer.observe(document.querySelector('title'), { childList: true });
 

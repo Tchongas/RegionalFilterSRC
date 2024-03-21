@@ -16,13 +16,14 @@ body {
     font-weight: 600;
     background-color:#aefcae
 }
+
 .popup-btn-large {
     width: 250px;
 }
+
 .popup-btn:hover {
     background-color: rgb(184, 191, 197);
 }
-
 
 .text-input {
     background-color: black;
@@ -34,10 +35,11 @@ body {
     font-weight: 600;
     color: white;
 }
+
+
 .text-input::placeholder {
     color: rgb(194, 194, 194);
 }
-
 
 .country-container {
     margin-bottom: 30px;
@@ -60,7 +62,7 @@ body {
     margin-right: auto;
 }
 
-.sidebar-checkBox {
+#sidebarCheckBox {
     height: 15px;
     width: 15px;
     background-color: #eee;
