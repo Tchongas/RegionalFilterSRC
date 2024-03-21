@@ -3,55 +3,13 @@
 <link rel="stylesheet" href="style.css">
 <html>
   <body>
-    <div class="title-container d-flex flex-column justify-content-center">
-      <h1 style=" font-weight: bold; font-size: 50px;"><span style="color: gold;">SRC</span>++</h1>
+    <p class="title-text"><b>PaceMan Extension</b></p>
+    <div class="container">
+      <div id="data">Loading...</div>
     </div>
-
-    <div class="country-container">
-      <div>
-        <p style="font-weight: bold; font-size: 30px;">Country Filter</p>
-      </div>
-      <div>
-        <span>Country code:</span>
-        <input type="text" id="imageFilterInput" placeholder="br, us, gb, pl..." class="text-input"  style="width: 30%;">
-      </div>
-      <div>
-        <button id="removeElementsButton" class="popup-btn">Filter</button>
-        <button id="undoButton" class="popup-btn">Reset</button>
-        
-      </div>
-      
-    </div>
-    <div class="country-container">
-      <div>
-        <p style="font-weight: bold; font-size: 30px;">View the game Queue</p>
-        <div>
-          <span>Start on:</span><input type="number" id="start-queue-input" placeholder="0" class="start-queue-input text-input" style="width: 15%;">
-          <span>End on:</span><input type="number" id="end-queue-input" placeholder="100" class="end-queue-input text-input"  style="width: 15%;">
-        </div>
-        <button id="queue" class="popup-btn popup-btn-large">View Queue</button>
-      </div>
-    </div>
-
-    <div class="country-container">
-      <div>
-        <p style="font-weight: bold; font-size: 30px;">Layout Options</p>
-        <div>
-          <label class="layout-label" for="sidebarCheckBox">Remove sidebar</label>
-          <input type="checkbox" class="sidebar-checkbox" id="sidebarCheckBox" name="sidebarCheckBox" value="Remove Sidebar"><br>
-          <div class="small-text">
-            <span id="sidebarWarn" class="small-text">You will need to refresh the page to make it re-appear</span>
-          </div>
-          
-        </div>
-      </div>
-    </div>
-
-
     
-
     <script src="./popup/popup.js"></script>
-    <script src="./scripts/sidebar.js"></script>
+    <script src="./scripts/content.js"></script>
   </body>
 
 

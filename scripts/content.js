@@ -1,215 +1,66 @@
-insertButtonIfNeeded();
+document.addEventListener('DOMContentLoaded', function() {
+  var dataElement = document.getElementById('data');
 
-var removedElements = [];
-
-chrome.storage.local.get(["sidebar"]).then((result) => {
-  console.log("Value is " + result.sidebar);
-  if(result.sidebar === "off") {
-    removeSections()
-  }
-});
-
-
-
-function removeCertainTRs(imageFilter) {
-
-  var trElements = document.querySelectorAll('tr');
-  trElements.forEach(function(tr) {
-    var imgElement = tr.querySelector('img[src="' + imageFilter + '.png"]');
-    if (imgElement === null) {
-      var tds = tr.querySelectorAll('td');
-      if (tds.length >= 2) {
-        var secondTd = tds[1];
-        var targetImg = secondTd.querySelector('div > span > div > div > a > img[src="/images/flags/'+imageFilter+'.png"]');
-        if (targetImg === null) {
-          // Check for specific classes
-          var tdClasses = secondTd.className;
-          if (tdClasses.includes("cursor-pointer") && tdClasses.includes("sticky") && tdClasses.includes("z-[4]") && tdClasses.includes("px-0.5") && tdClasses.includes("text-left")) {
-            removedElements.push(tr);
-            tr.style.display = 'none';
-          }
-        }
-      }
-    }
-  });
-}
-
-//restore the removed elements
-function restoreRemovedElements() {
-  removedElements.forEach(function(element) {
-    element.style.display = 'table-row';
-  });
-  removedElements = [];
-}
-
-
-// Listen for messages from the popup
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.action === 'remove_elements') {
-    removeCertainTRs(request.imageFilter);
-    console.log(request.imageFilter)
-
+  function fetchData() {
+    fetch('https://paceman.gg/api/ars/liveruns')
+      .then(response => response.json())
+      .then(data => {
+        var formattedData = formatData(data);
+        dataElement.innerHTML = formattedData;
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        dataElement.textContent = 'Error fetching data';
+      });
   } 
+  fetchData();
 
-  else if (request.action === 'undo_delete') {
-    restoreRemovedElements();
-  }
+  setInterval(fetchData, 8000);
 
-
-  else if (request.action === 'remove_sidebar') {
-    chrome.storage.local.get(["sidebar"]).then((result) => {
-      if(result.sidebar === "off") {
-        chrome.storage.local.set({ sidebar: "on" }).then(() => {
-          console.log("sidebar is on");
-        });
-        return
+  function formatData(data) {
+    var formattedHTML = '';
+  
+    data.forEach(entry => {
+      formattedHTML += '<div class="run-popup-container">'; 
+      formattedHTML += '<div class="run-popup-avatar">';
+      formattedHTML += '<img src="http://cravatar.eu/helmavatar/' + entry.user.uuid + '" width="50" height="50" id="head">';
+      formattedHTML += '</div>';
+      formattedHTML += '<div class="run-popup-info"><span><b>' + entry.nickname + ' </b></span></div>';
+      var lastEvent = entry.eventList[entry.eventList.length - 1];
+      if (lastEvent) {
+        formattedHTML += '<div><p><span class="run-split-text"> ' + getEventDescription(lastEvent.eventId) + '</span><br> IGT: <b class="run-split-time">' + formatTime(lastEvent.igt) + '</b> RTA: <b class="run-split-time">' + formatTime(lastEvent.rta) + '</b></p></div>';
       }
-      removeSections()
+      formattedHTML += '</div><br>';
     });
-  } 
-
-
-  else if (request.action === 'get_queue') {
-    var url = window.location.href;
-    var gameAbbr;
-    if (url.indexOf("?") !== -1) {
-        gameAbbr = url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
-    } else {
-        gameAbbr = url.substring(url.lastIndexOf("/") + 1);
-        console.log("1");
-    }
-    console.log(gameAbbr);
-    console.log("2");
-    console.log(request.queueOptionStart);
-    get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd)
-  } 
-});
-
-
-
-
-
-
-
-
-function insertButton() {
   
-  var newButton = document.createElement('button');
-  newButton.setAttribute('type', 'button');
-  newButton.setAttribute('tabindex', '0');
-  newButton.style.border = '2px solid gold';
-  newButton.style.color = 'gold';
-  newButton.className = 'x-input-button items-center rounded text-sm px-2.5 py-1.5 bg-input text-on-input border border-around-input hover:bg-input-hover disabled:bg-input w-32';
-
-  newButton.id = 'regionalFilter'
-
-  var spanElement = document.createElement('span');
-  spanElement.textContent = 'Country Filter';
-
-  newButton.appendChild(spanElement);
-
-  var targetDiv = document.querySelector('.contents.grow.flex-row.flex-wrap.items-center.justify-end.gap-2.sm\\:flex');
-
-  if (targetDiv) {
-    targetDiv.prepend(newButton);
+    return formattedHTML;
   }
 
+  function formatTime(milliseconds) {
+    var totalSeconds = Math.floor(milliseconds / 1000);
 
-  newButton.addEventListener('click', function() {
-    console.log('nutton clicked');
-    
-    let text;
-    let country = prompt("Please enter a Country Code, or leave it blank to reset the leaderboard", "Example: BR, US, CN, GB, PL...");
-    if (country == null || country == "" || country == "Example: BR, US, CN, GB, PL...") {
-      restoreRemovedElements()
-    } else {
-      text = country.toLowerCase();
-      restoreRemovedElements()
-      removeCertainTRs(text)
-    }
-  });
-}
+    var minutes = Math.floor(totalSeconds / 60);
+    var seconds = totalSeconds % 60;
 
-
-
-function insertQueueButton() {
-  
-  var newButton = document.createElement('button');
-  newButton.setAttribute('type', 'button');
-  newButton.setAttribute('tabindex', '0');
-  newButton.style.border = '2px solid red';
-  newButton.style.color = 'red';
-  newButton.className = 'x-input-button items-center rounded text-sm px-2.5 py-1.5 bg-input text-on-input border border-around-input hover:bg-input-hover disabled:bg-input w-32';
-
-  newButton.id = 'queueBtn'
-
-  var spanElement = document.createElement('span');
-  spanElement.textContent = 'View Queue';
-
-  newButton.appendChild(spanElement);
-
-  var targetDiv = document.querySelector('.contents.grow.flex-row.flex-wrap.items-center.justify-end.gap-2.sm\\:flex');
-
-  if (targetDiv) {
-    targetDiv.prepend(newButton);
+    return ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
   }
 
+  const eventDescriptions = {
+    'rsg.enter_fortress': '<span class="run-split-fortress">Entered Fortress</span>',
+    'rsg.enter_bastion': '<span class="run-split-bastion">Enter Bastion</span>',
+    'rsg.enter_stronghold': '<span class="run-split-stronghold">Enter Stronghold</span>',
+    'rsg.enter_end': '<span class="run-split-end">Enter End</span>',
+    'rsg.enter_nether': '<span class="run-split-nether">Enter Nether</span>',
+    'rsg.credits': '<span class="run-split-credits">Finish</span>',
+    'rsg.first_portal': '<span class="run-split-portal">First Portal</span>',
+    'rsg.second_portal': '<span class="run-split-portal">Second Portal</span>',
+  };
 
-  newButton.addEventListener('click', function(request, sender, sendResponse) {
-    console.log('queue button clicked');
-    var url = window.location.href;
-    var gameAbbr;
-    if (url.indexOf("?") !== -1) {
-        gameAbbr = url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
+  function getEventDescription(eventId) {
+    if (eventDescriptions[eventId]) {
+      return eventDescriptions[eventId];
     } else {
-        gameAbbr = url.substring(url.lastIndexOf("/") + 1);
+      return eventId;
     }
-    console.log(gameAbbr);
-
-    get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd)
-    
-
-  });
-}
-
-
-
-
-
-
-
-
-
-
-
-// Listen for messages from the popup
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.action === 'insert_button') {
-    insertButton();
   }
 });
-
-
-
-function insertButtonIfNeeded() {
-  const regionalFilterButton = document.getElementById('regionalFilter');
-  if (!regionalFilterButton) {
-    insertButton();
-    insertQueueButton()
-  }
-}
-
-
-
-const observer = new MutationObserver(function(mutationsList, observer) {
-    insertButtonIfNeeded();
-
-  chrome.storage.local.get(["sidebar"]).then((result) => {
-    if(result.sidebar === "off") {
-      removeSections()
-    }
-  });
-});
-
-observer.observe(document.querySelector('title'), { childList: true });
-

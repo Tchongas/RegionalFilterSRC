@@ -1,71 +1,111 @@
 body {
     background-color: #191C1B;
     color: aliceblue;
-    width: 400px;
-    height: 600px;
+    width: 500px;
+   
     text-align: center;
 }
 
-.popup-btn {
-    width: 120px;
-    height: 40px;
-    border-radius: 5px;
-    border: none;
-    margin: 5px;
-    font-size: large;
-    font-weight: 600;
-    background-color:#aefcae
-}
-.popup-btn-large {
-    width: 250px;
-}
-.popup-btn:hover {
-    background-color: rgb(184, 191, 197);
+.container {
+    display: flex;
+    justify-content: center;
 }
 
-
-.text-input {
-    background-color: black;
-    outline: 2px solid rgb(78, 83, 78);
-    border: none;
-    border-radius: 6px;
-    margin: 5px;
-    padding: 5px;
-    font-weight: 600;
-    color: white;
-}
-.text-input::placeholder {
-    color: rgb(194, 194, 194);
-}
-
-
-.country-container {
-    margin-bottom: 30px;
-    border-radius: 10px;
-}
-
-.title-container{
+.run-popup-container {
+    min-width: 0;
     padding: 10px;
-    margin-bottom: 10px;
-    background-color: #171917;
-    outline: 2px solid rgb(78, 83, 78);
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: rgb(54, 54, 70);
+    border-radius: 5px;
+
 }
 
-.small-text {
-    color: rgb(189, 189, 189);
-    width: 340px;
-    font-size: 14px;
+
+.run-popup-container p{
+    padding: 10px   ;
+    line-height: 1.2;
+    background-color: rgb(62, 62, 80);
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.run-popup-avatar {
+    
+}
+
+.run-popup-info {
+    padding: 10px;
+    width: 180px;
+    font-size: 20px;
+    word-wrap:break-word;
+}
+
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+  
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+  
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.title-text {
+    font-size: 30px;
+    color: aliceblue;
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 10px;    
 }
 
-.sidebar-checkBox {
-    height: 15px;
-    width: 15px;
-    background-color: #eee;
+.run-split-text {
+    font-size: 20px;
+    text-align: center;
+    
+
+    font-weight: bold;
 }
 
-.layout-label{
-    font-size: 18px;
+.run-split-time {
+    font-size: 20px;
+}
+
+
+
+.run-split-fortress {
+    color: rgb(224, 132, 132);
+}
+
+.run-split-bastion {
+    color: rgb(191, 209, 233);
+}
+
+.run-split-stronghold {
+    color: rgb(183, 193, 204);
+}       
+
+.run-split-end {
+    color: rgb(255, 255, 197);
+}
+
+.run-split-nether {
+    color: rgb(230, 157, 157);
+}
+
+.run-split-portal {
+    color: rgb(239, 159, 255);
+}
+
+.run-split-credits {
+    color: rgb(178, 255, 134);
 }
