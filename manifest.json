@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "PaceMan extension",
-  "description": "extension to see paceman in every tab",
+  "name": "SRC++",
+  "description": "An extension that adds extra functions to Speedrun.com",
   "version": "1.3",
   "permissions": ["activeTab", "storage"],
   "host_permissions": ["https://www.speedrun.com/*"],
@@ -11,13 +11,10 @@
   "icons": {
     "128": "icon128.png"
   },
-  "background": {
-    "service_worker": "backgrond.js"
-  },
   "content_scripts": [
     {
       "matches": ["https://www.speedrun.com/*"],
-      "js": ["scripts/content.js"]
+      "js": ["scripts/content.js", "scripts/queue.js", "scripts/sidebar.js"]
     }
   ]
 }
