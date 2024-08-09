@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var StartQueueInput = document.getElementById('start-queue-input');
   var EndQueueInput = document.getElementById('end-queue-input');
   var sidebarCheckBox = document.getElementById('sidebarCheckBox');
-  var sidebarWarn = document.getElementById('sidebarWarn');
+  var styleCheckBox = document.getElementById('styleCheckBox');
 
   removeElementsButton.addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
@@ -39,5 +39,17 @@ document.addEventListener('DOMContentLoaded', function() {
       return
     }
   });
+  styleCheckBox.addEventListener('change', function() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'remove_style' });
+    });
+  });
+  chrome.storage.local.get(["style"]).then((result) => {
+    if(result.style === "off") {
+      styleCheckBox.checked = true;
+      return
+    }
+  });
+
   
 });

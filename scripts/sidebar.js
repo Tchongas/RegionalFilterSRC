@@ -26,6 +26,30 @@ function removeSections() {
     */
   }
 
-  function removeSideBar() {
+  function removeStyle() {
+    const stylesheetId = 'theme-css';
 
-  }
+    const removeStylesheet = () => {
+        const stylesheet = document.getElementById(stylesheetId);
+        if (stylesheet) {
+            stylesheet.remove();
+        }
+    };
+    removeStylesheet();
+
+    const observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+            if (mutation.type === 'childList') {
+                console.log("mutation.target.id");
+                removeStylesheet();
+            }
+        }
+    });
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true,
+    });
+
+    chrome.storage.local.set({ style: "off" });
+}

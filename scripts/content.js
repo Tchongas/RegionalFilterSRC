@@ -3,9 +3,17 @@ insertButtonIfNeeded();
 var removedElements = [];
 
 chrome.storage.local.get(["sidebar"]).then((result) => {
-  console.log("Value is " + result.sidebar);
+  console.log("sidebars " + result.sidebar);
   if(result.sidebar === "off") {
     removeSections()
+  }
+});
+
+
+chrome.storage.local.get(["style"]).then((result) => {
+  console.log("style " + result.style);
+  if(result.style === "off") {
+    removeStyle()
   }
 });
 
@@ -65,6 +73,18 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         return
       }
       removeSections()
+    });
+  } 
+
+  else if (request.action === 'remove_style') {
+    chrome.storage.local.get(["style"]).then((result) => {
+      if(result.style === "off") {
+        chrome.storage.local.set({ style: "on" }).then(() => {
+          console.log("style is on");
+        });
+        return
+      }
+      removeStyle()
     });
   } 
 
@@ -207,6 +227,12 @@ const observer = new MutationObserver(function(mutationsList, observer) {
   chrome.storage.local.get(["sidebar"]).then((result) => {
     if(result.sidebar === "off") {
       removeSections()
+    }
+  });
+
+  chrome.storage.local.get(["style"]).then((result) => {
+    if(result.style === "off") {
+      removeStyle()
     }
   });
 });
