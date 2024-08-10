@@ -3,7 +3,6 @@ insertButtonIfNeeded();
 var removedElements = [];
 
 chrome.storage.local.get(["sidebar"]).then((result) => {
-  console.log("sidebars " + result.sidebar);
   if(result.sidebar === "off") {
     removeSections()
   }
@@ -11,12 +10,17 @@ chrome.storage.local.get(["sidebar"]).then((result) => {
 
 
 chrome.storage.local.get(["style"]).then((result) => {
-  console.log("style " + result.style);
   if(result.style === "off") {
     removeStyle()
   }
 });
 
+chrome.storage.local.get(["state"]).then((result) => {
+  console.log("state " + result.state);
+  if(result.state === "on") {
+    testingStates()
+  }
+});
 
 
 function removeCertainTRs(imageFilter) {
@@ -55,7 +59,7 @@ function restoreRemovedElements() {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === 'remove_elements') {
     removeCertainTRs(request.imageFilter);
-    console.log(request.imageFilter)
+    
 
   } 
 
@@ -68,7 +72,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     chrome.storage.local.get(["sidebar"]).then((result) => {
       if(result.sidebar === "off") {
         chrome.storage.local.set({ sidebar: "on" }).then(() => {
-          console.log("sidebar is on");
         });
         return
       }
@@ -80,13 +83,28 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     chrome.storage.local.get(["style"]).then((result) => {
       if(result.style === "off") {
         chrome.storage.local.set({ style: "on" }).then(() => {
-          console.log("style is on");
         });
         return
       }
       removeStyle()
     });
   } 
+
+  else if (request.action === 'state_flags') {
+    chrome.storage.local.get(["state"]).then((result) => {
+      if(result.state !== "on") {
+        chrome.storage.local.set({ state: "on" }).then(() => {
+          testingStates()
+          return
+        });
+      } else if(result.state === "on") {
+        chrome.storage.local.set({ state: "off" })
+      }
+      
+    });
+
+    
+  }
 
 
   else if (request.action === 'get_queue') {
@@ -96,14 +114,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         gameAbbr = url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
     } else {
         gameAbbr = url.substring(url.lastIndexOf("/") + 1);
-        console.log("1");
     }
-    console.log(gameAbbr);
-    console.log("2");
-    console.log(request.queueOptionStart);
     get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd)
   } 
+
+
 });
+
+
 
 
 
@@ -136,7 +154,6 @@ function insertButton() {
 
 
   newButton.addEventListener('click', function() {
-    console.log('nutton clicked');
     
     let text;
     let country = prompt("Please enter a Country Code, or leave it blank to reset the leaderboard", "Example: BR, US, CN, GB, PL...");
@@ -176,7 +193,6 @@ function insertQueueButton() {
 
 
   newButton.addEventListener('click', function(request, sender, sendResponse) {
-    console.log('queue button clicked');
     var url = window.location.href;
     var gameAbbr;
     if (url.indexOf("?") !== -1) {
@@ -184,19 +200,12 @@ function insertQueueButton() {
     } else {
         gameAbbr = url.substring(url.lastIndexOf("/") + 1);
     }
-    console.log(gameAbbr);
 
     get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd)
     
 
   });
 }
-
-
-
-
-
-
 
 
 
@@ -235,7 +244,36 @@ const observer = new MutationObserver(function(mutationsList, observer) {
       removeStyle()
     }
   });
+
+  chrome.storage.local.get(["state"]).then((result) => {
+    if(result.state === "on") {
+      console.log("observer");
+        testingStates()
+    }
+  });
 });
 // Start observing the <body> node for childList changes
 observer.observe(document.querySelector('title'), { childList: true });
 
+
+let previousPath = window.location.pathname + window.location.search;
+
+const observerURL = new MutationObserver(() => {
+    const currentPath = window.location.pathname + window.location.search;
+
+    if (previousPath !== currentPath) {
+      chrome.storage.local.get(["state"]).then((result) => {
+        if (result.state === "on") {
+          setTimeout(function() {
+            testingStates()
+          }, 500);
+          
+        }
+      });
+
+        console.log("URL path or parameters changed:", currentPath);
+        previousPath = currentPath;
+    }
+});
+
+observerURL.observe(document, { subtree: true, childList: true });

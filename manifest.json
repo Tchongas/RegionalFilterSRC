@@ -3,7 +3,7 @@
   "name": "SRC++",
   "description": "An extension that adds extra functions to Speedrun.com",
   "version": "1.4",
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "webNavigation", "tabs"],
   "host_permissions": ["https://www.speedrun.com/*"],
   "action": {
     "default_popup": "index.html"
@@ -11,10 +11,13 @@
   "icons": {
     "128": "icon128.png"
   },
+  "background": {
+    "service_worker": "scripts/background/background.js"
+  },
   "content_scripts": [
     {
       "matches": ["https://www.speedrun.com/*"],
-      "js": ["scripts/content.js", "scripts/queue.js", "scripts/sidebar.js"]
+      "js": ["scripts/content.js", "scripts/queue.js", "scripts/sidebar.js", "scripts/states/stateManager.js", "scripts/states/stateLinks.js"]
     }
   ]
 }

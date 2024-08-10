@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var removeElementsButton = document.getElementById('removeElementsButton');
   var undoButton = document.getElementById('undoButton');
   var queue = document.getElementById('queue');
+  var state = document.getElementById('stateCheckBox');
   var imageFilterInput = document.getElementById('imageFilterInput');
   var StartQueueInput = document.getElementById('start-queue-input');
   var EndQueueInput = document.getElementById('end-queue-input');
@@ -27,6 +28,17 @@ document.addEventListener('DOMContentLoaded', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, { action: 'get_queue', queueOptionStart: StartQueueInput.value, queueOptionEnd: EndQueueInput.value });
     });
+  });
+  state.addEventListener('change', function() {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'state_flags' });
+    });
+  });
+  chrome.storage.local.get(["state"]).then((result) => {
+    if(result.state === "on") {
+      state.checked = true;
+      return
+    }
   });
   sidebarCheckBox.addEventListener('change', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {

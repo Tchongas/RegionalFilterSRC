@@ -279,9 +279,6 @@ const HEADER = "https://www.speedrun.com/api/v1/";
       function edit_working_queue(startPoint,endPoint) {
         startPoint = parseInt(startPoint)
         endPoint = parseInt(endPoint)
-        console.log(endPoint)
-        console.log(startPoint)
-        console.log("edit_working_queue")
 
         selected = "All Categories"
 
@@ -303,7 +300,6 @@ const HEADER = "https://www.speedrun.com/api/v1/";
         let output = "";
         for (let index = startPoint; index <= endPoint; index++) {
           let run = queue[index];
-          console.log(index)
           document.getElementsByTagName('tbody')[0].innerHTML = output;
 
           if (index == endPoint) {

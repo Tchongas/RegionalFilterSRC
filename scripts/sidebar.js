@@ -42,6 +42,7 @@ function removeSections() {
             if (mutation.type === 'childList') {
                 console.log("mutation.target.id");
                 removeStylesheet();
+                
             }
         }
     });
