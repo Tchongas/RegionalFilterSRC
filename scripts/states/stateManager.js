@@ -2,7 +2,7 @@
 
 function testingStates() {
     const brasilflags = document.querySelectorAll('img[src="/images/flags/br.png"]');
-    console.log("testingStates");
+    //console.log("testingStates");
 
     for (let i = 0; i < brasilflags.length; i++) {
         const alt = brasilflags[i].alt;

@@ -40,7 +40,7 @@ function removeSections() {
     const observer = new MutationObserver((mutations) => {
         for (const mutation of mutations) {
             if (mutation.type === 'childList') {
-                console.log("mutation.target.id");
+                //console.log("mutation.target.id");
                 removeStylesheet();
                 
             }

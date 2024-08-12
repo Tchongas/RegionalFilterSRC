@@ -16,7 +16,7 @@ chrome.storage.local.get(["style"]).then((result) => {
 });
 
 chrome.storage.local.get(["state"]).then((result) => {
-  console.log("state " + result.state);
+  //console.log("state " + result.state);
   if(result.state === "on") {
     testingStates()
   }
@@ -247,33 +247,10 @@ const observer = new MutationObserver(function(mutationsList, observer) {
 
   chrome.storage.local.get(["state"]).then((result) => {
     if(result.state === "on") {
-      console.log("observer");
+      //console.log("observer");
         testingStates()
     }
   });
 });
 // Start observing the <body> node for childList changes
 observer.observe(document.querySelector('title'), { childList: true });
-
-
-let previousPath = window.location.pathname + window.location.search;
-
-const observerURL = new MutationObserver(() => {
-    const currentPath = window.location.pathname + window.location.search;
-
-    if (previousPath !== currentPath) {
-      chrome.storage.local.get(["state"]).then((result) => {
-        if (result.state === "on") {
-          setTimeout(function() {
-            testingStates()
-          }, 500);
-          
-        }
-      });
-
-        console.log("URL path or parameters changed:", currentPath);
-        previousPath = currentPath;
-    }
-});
-
-observerURL.observe(document, { subtree: true, childList: true });
