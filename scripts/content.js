@@ -15,12 +15,14 @@ chrome.storage.local.get(["style"]).then((result) => {
   }
 });
 
+/*
 chrome.storage.local.get(["state"]).then((result) => {
   //console.log("state " + result.state);
   if(result.state === "on") {
     testingStates()
   }
 });
+*/
 
 
 function removeCertainTRs(imageFilter) {
@@ -90,6 +92,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     });
   } 
 
+/*
   else if (request.action === 'state_flags') {
     chrome.storage.local.get(["state"]).then((result) => {
       if(result.state !== "on") {
@@ -100,11 +103,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       } else if(result.state === "on") {
         chrome.storage.local.set({ state: "off" })
       }
-      
     });
-
-    
   }
+*/
 
 
   else if (request.action === 'get_queue') {
@@ -245,12 +246,12 @@ const observer = new MutationObserver(function(mutationsList, observer) {
     }
   });
 
-  chrome.storage.local.get(["state"]).then((result) => {
+  /*chrome.storage.local.get(["state"]).then((result) => {
     if(result.state === "on") {
       //console.log("observer");
         testingStates()
     }
-  });
+  });*/
 });
 // Start observing the <body> node for childList changes
 observer.observe(document.querySelector('title'), { childList: true });
