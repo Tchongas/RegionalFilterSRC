@@ -25,7 +25,7 @@ chrome.storage.local.get(["state"]).then((result) => {
 */
 
 
-function removeCertainTRs(imageFilter) {
+function countryFilter(imageFilter) {
 
   var trElements = document.querySelectorAll('tr');
   trElements.forEach(function(tr) {
@@ -48,8 +48,7 @@ function removeCertainTRs(imageFilter) {
   });
 }
 
-//restore the removed elements
-function restoreRemovedElements() {
+function restoreRun() {
   removedElements.forEach(function(element) {
     element.style.display = 'table-row';
   });
@@ -59,17 +58,15 @@ function restoreRemovedElements() {
 
 // Listen for messages from the popup
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  //Remove Runs that are not the country you want
   if (request.action === 'remove_elements') {
-    removeCertainTRs(request.imageFilter);
-    
-
+    countryFilter(request.imageFilter);
   } 
-
+  //not used
   else if (request.action === 'undo_delete') {
-    restoreRemovedElements();
+    restoreRun();
   }
-
-
+  //Remove the sidebar from the website
   else if (request.action === 'remove_sidebar') {
     chrome.storage.local.get(["sidebar"]).then((result) => {
       if(result.sidebar === "off") {
@@ -80,7 +77,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       removeSections()
     });
   } 
-
+  //Remove the style element from the website that has the custom styles
   else if (request.action === 'remove_style') {
     chrome.storage.local.get(["style"]).then((result) => {
       if(result.style === "off") {
@@ -91,8 +88,19 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
       removeStyle()
     });
   } 
+  //get the queue using the URL for the API request
+  else if (request.action === 'get_queue') {
+    var url = window.location.href;
+    var gameAbbr;
+    if (url.indexOf("?") !== -1) {
+        gameAbbr = url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
+    } else {
+        gameAbbr = url.substring(url.lastIndexOf("/") + 1);
+    }
+    get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd)
+  } 
 
-/*
+  /*
   else if (request.action === 'state_flags') {
     chrome.storage.local.get(["state"]).then((result) => {
       if(result.state !== "on") {
@@ -106,30 +114,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     });
   }
 */
-
-
-  else if (request.action === 'get_queue') {
-    var url = window.location.href;
-    var gameAbbr;
-    if (url.indexOf("?") !== -1) {
-        gameAbbr = url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
-    } else {
-        gameAbbr = url.substring(url.lastIndexOf("/") + 1);
-    }
-    get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd)
-  } 
-
-
 });
-
-
-
-
-
-
-
-
-
 
 function insertButton() {
   
@@ -159,16 +144,14 @@ function insertButton() {
     let text;
     let country = prompt("Please enter a Country Code, or leave it blank to reset the leaderboard", "Example: BR, US, CN, GB, PL...");
     if (country == null || country == "" || country == "Example: BR, US, CN, GB, PL...") {
-      restoreRemovedElements()
+      restoreRun()
     } else {
       text = country.toLowerCase();
-      restoreRemovedElements()
-      removeCertainTRs(text)
+      restoreRun()
+      countryFilter(text)
     }
   });
 }
-
-
 
 function insertQueueButton() {
   
@@ -208,18 +191,6 @@ function insertQueueButton() {
   });
 }
 
-
-
-
-
-// Listen for messages from the popup
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.action === 'insert_button') {
-    insertButton();
-  }
-});
-
-
 // Function to insert a button element into the specific div in the webpage
 function insertButtonIfNeeded() {
   const regionalFilterButton = document.getElementById('regionalFilter');
@@ -228,7 +199,6 @@ function insertButtonIfNeeded() {
     insertQueueButton()
   }
 }
-
 
 // Create a new MutationObserver instance
 const observer = new MutationObserver(function(mutationsList, observer) {
