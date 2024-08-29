@@ -17,7 +17,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.speedrun.com/*"],
-      "js": ["scripts/content.js", "scripts/queue.js", "scripts/sidebar.js", "scripts/states/stateManager.js", "scripts/states/stateLinks.js"]
+      "js": ["scripts/content.js", "scripts/queue.js", "scripts/sidebar.js"]
     }
   ]
 }
