@@ -46,50 +46,56 @@ function restoreRun() {
 }
 
 
-// Listen for messages from the popup
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  //Remove Runs that are not the country you want
-  if (request.action === 'remove_elements') {
-    countryFilter(request.imageFilter);
-  } 
-  //not used
-  else if (request.action === 'undo_delete') {
-    restoreRun();
-  }
-  //Remove the sidebar from the website
-  else if (request.action === 'remove_sidebar') {
-    chrome.storage.local.get(["sidebar"]).then((result) => {
-      if(result.sidebar === "off") {
-        chrome.storage.local.set({ sidebar: "on" }).then(() => {
-        });
-        return
-      }
-      removeSections()
-    });
-  } 
-  //Remove the style element from the website that has the custom styles
-  else if (request.action === 'remove_style') {
-    chrome.storage.local.get(["style"]).then((result) => {
-      if(result.style === "off") {
-        chrome.storage.local.set({ style: "on" }).then(() => {
-        });
-        return
-      }
-      removeStyle()
-    });
-  } 
-  //get the queue using the URL for the API request
-  else if (request.action === 'get_queue') {
-    var url = window.location.href;
-    var gameAbbr;
-    if (url.indexOf("?") !== -1) {
-        gameAbbr = url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
-    } else {
-        gameAbbr = url.substring(url.lastIndexOf("/") + 1);
+/* -----------------------------------------------------------------------------
+START OF MESSAGE LISTENERS 
+----------------------------------------------------------------------------- */
+
+chrome.runtime.onMessage.addListener(handleMessage);
+
+function handleMessage(request, sender, sendResponse) {
+  const popUpActions = {
+    'remove_elements': () => countryFilter(request.imageFilter),
+    'undo_delete': restoreRun,
+    'remove_sidebar': () => toggleFeature('sidebar', removeSections),
+    'remove_style': () => toggleFeature('style', removeStyle),
+    'get_queue': () => {
+      const gameAbbr = getGameAbbr();
+      get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd);
     }
-    get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd)
-  } 
-});
+  };
+
+  // Run functions defined in object
+  const selectedPopUpAction = popUpActions[request.action];
+  if (selectedPopUpAction) {
+    console.log(selectedPopUpAction)
+    selectedPopUpAction();
+  }
+}
+
+// Toggles sidebar and styles on or off
+function toggleFeature(featureName, actionFunction) {
+  chrome.storage.local.get([featureName]).then((result) => {
+    if (result[featureName] === "off") {
+      chrome.storage.local.set({ [featureName]: "on" });
+    } else {
+      actionFunction();
+    }
+  });
+}
+
+// Gets the game abbreviation from the URL and then uses it to get the queue
+function getGameAbbr() {
+  const url = window.location.href;
+  const lastSlashIndex = url.lastIndexOf("/") + 1;
+  const questionMarkIndex = url.indexOf("?");
+  return questionMarkIndex !== -1
+    ? url.substring(lastSlashIndex, questionMarkIndex)
+    : url.substring(lastSlashIndex);
+}
+
+/* -----------------------------------------------------------------------------
+END OF MESSAGE LISTENERS 
+----------------------------------------------------------------------------- */
 
 function insertButton() {
   
@@ -115,7 +121,6 @@ function insertButton() {
 
 
   newButton.addEventListener('click', function() {
-    
     let text;
     let country = prompt("Please enter a Country Code, or leave it blank to reset the leaderboard", "Example: BR, US, CN, GB, PL...");
     if (country == null || country == "" || country == "Example: BR, US, CN, GB, PL...") {
