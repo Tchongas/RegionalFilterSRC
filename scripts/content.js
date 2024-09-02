@@ -60,6 +60,7 @@ function handleMessage(request, sender, sendResponse) {
     'remove_style': () => toggleFeature('style', removeStyle),
     'get_queue': () => {
       const gameAbbr = getGameAbbr();
+      console.log("test");
       get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd);
     }
   };
@@ -85,13 +86,26 @@ function toggleFeature(featureName, actionFunction) {
 
 // Gets the game abbreviation from the URL and then uses it to get the queue
 function getGameAbbr() {
-  const url = window.location.href;
-  const lastSlashIndex = url.lastIndexOf("/") + 1;
-  const questionMarkIndex = url.indexOf("?");
-  return questionMarkIndex !== -1
-    ? url.substring(lastSlashIndex, questionMarkIndex)
-    : url.substring(lastSlashIndex);
+  const url = window.location.href.split("?")[0]; // Split by '?' and take the first part
+  const pathSegments = url.split("/")
+  console.log(pathSegments);
+  // If the URL has only 4 segments, return the last segment.
+  if (pathSegments.length === 4) {
+    console.log("2");
+    return pathSegments[pathSegments.length - 1];
+  }
+
+  const secondLastSegment = pathSegments[pathSegments.length - 2];
+
+  if (secondLastSegment.match(/^[a-z]{2}(?:-[A-Z]{2})?$/)) {
+    console.log("2");
+    return pathSegments[pathSegments.length - 1];
+   
+  }
+  console.log("3");
+  return secondLastSegment;
 }
+
 
 /* -----------------------------------------------------------------------------
 END OF MESSAGE LISTENERS 

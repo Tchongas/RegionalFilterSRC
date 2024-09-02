@@ -501,9 +501,6 @@ const HEADER = "https://www.speedrun.com/api/v1/";
                                  name_gradientD.map((c, i) => `<span style="color:#${c}">${escape(user_name[i])}</span>`).join("") +
                                `</span>`;
           } else if (name_style.style == "solid") {
-            
-            let colorL = name_style.color.light;
-            let colorD = name_style.color.dark;
             var display_name = `<span class="xlight ">` + escape(user_name) + `</span>` + `<span class="xdark">` +`</span>`;
           }
 
