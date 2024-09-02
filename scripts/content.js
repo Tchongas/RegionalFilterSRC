@@ -169,17 +169,13 @@ function insertQueueButton() {
     targetDiv.prepend(newButton);
   }
 
+  const gameAbbr = getGameAbbr();
 
   newButton.addEventListener('click', function(request, sender, sendResponse) {
-    var url = window.location.href;
-    var gameAbbr;
-    if (url.indexOf("?") !== -1) {
-        gameAbbr = url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
-    } else {
-        gameAbbr = url.substring(url.lastIndexOf("/") + 1);
-    }
-
+    const gameAbbr = getGameAbbr();
     get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd)
+
+    
     
 
   });
