@@ -1,21 +1,19 @@
 const HEADER = "https://www.speedrun.com/api/v1/";
 
       
-      async function json_from_url_await(url) {
-        let resp = await fetch(url);
-        if (resp.ok)
-          return resp.json();
+      async function fetchURLawait(url) {
+        let response = await fetch(url);
+        if (response.ok)
+          return response.json();
         else
-          throw resp.status;
+          throw resposne.status;
       }
 
-      async function json_from_src_await(short_url) {
-        return await json_from_url_await(HEADER + short_url);
+      async function fetchSRCawait(short_url) {
+        return await fetchURLawait(HEADER + short_url);
       }                
 
       async function continual_data_await_fast_reverse(short_url, limit) {
-        if (limit % 200)
-          throw "Limit must be a multiple of 200";
         if (limit > 10000)
           throw "Limit must be no greater than 10000";
         
@@ -28,7 +26,7 @@ const HEADER = "https://www.speedrun.com/api/v1/";
           let promises = [];
           let dir = reverse ? "desc" : "asc";
           for (let i = 0; i < limit; i += 200) {
-            promises.push(json_from_src_await(
+            promises.push(fetchSRCawait(
               short_url + (short_url.includes("?") ? "&" : "?") + `orderby=submitted&direction=${await dir}&max=200` +
               `&offset=${start * limit + i}`
             ).then(function(json) {hold.push(...json.data.map(free));
@@ -188,53 +186,31 @@ const HEADER = "https://www.speedrun.com/api/v1/";
         </td>
       </tr>`;
         try {
-          var gameObj = await json_from_src_await(`games/${abbr}`);
+          var gameObj = await fetchSRCawait(`games/${abbr}`);
         }
         catch (code) {
-          let errorMsg;
-          if (code == 404) {
-            errorMsg = `Invalid game: ${escape(abbr)}`;
-          } else if (code >= 400) {
-            errorMsg = `Speedrun.com server error (${code})`;
-          } else {
-            errorMsg = "Unknown error";
-          }
-          
           return;
         }
+
         gameID = gameObj.data.id;
         gameName = gameObj.data.names.international;
+
         try {
           queue = await continual_data_await_fast_reverse(`runs?game=${await gameID}&status=new&embed=category,level,players`, 5000);
         }
         catch (code) {
-          let errorMsg;
-          if (code >= 400) {
-            errorMsg = `Speedrun.com server error (${code})`;
-          } else if (code == -1) {
-            errorMsg = `Queue for ${gameName} has more than 20000 runs. Could not fetch the entire queue.`;
-          } else {
-            errorMsg = "Unknown error";
-          }
-          
           return;
         }
         queue.sort((a, b) => ((a.submitted != b.submitted) ? ((a.submitted > b.submitted) - 0.5) : 0));
         queue.sort((a, b) => ((a.date != b.date) ? ((a.date > b.date) - 0.5) : 0));
         working_queue = queue;
         try {
-          var varObj = await json_from_src_await(`games/${gameID}/variables`);
+          var varObj = await fetchSRCawait(`games/${gameID}/variables`);
         }
         catch (code) {
-          let errorMsg;
-          if (code >= 400) {
-            errorMsg = `Speedrun.com server error (${code})`;
-          } else {
-            errorMsg = "Unknown error";
-          }
-          
           return;
         }
+        
         var_map = {};
         subcat_map = {};
         for (let variable of varObj.data) {
@@ -245,20 +221,7 @@ const HEADER = "https://www.speedrun.com/api/v1/";
               subcat_map[value] = variable.values.values[value].label;
           }
         }
-        let all_cats = [];
-        for (let run of queue) {
-          let full_cat = full_category(run);
-          if (!all_cats.includes(full_cat))
-            all_cats.push(full_cat);
-        }
-        all_cats.sort((a, b) => ((a > b) - 0.5));
-        all_cats.unshift("All Categories");
-        let cat_select = `<select name="category-select" id="category-select" >`;
-        for (let cat of all_cats)
-          cat_select += `<option value="${cat}">${cat}</option>`;
-        cat_select += `</select> <button onclick="edit_working_queue()" >Apply</button>`;
 
-        //document.getElementById("category-error").innerHTML = cat_select;
         edit_working_queue(startPoint,endPoint);
       }
 
@@ -396,7 +359,7 @@ const HEADER = "https://www.speedrun.com/api/v1/";
           <td class="sticky left-0 z-[4]">
             <a class="px-1.5 py-1" tabindex="-1" href="">
               <span class="inline-flex flex-nowrap items-center justify-start gap-1">
-                <span>${index}</span>
+                <span>${index + 1}</span>
               </span>
             </a>
           </td>
@@ -406,7 +369,7 @@ const HEADER = "https://www.speedrun.com/api/v1/";
                 <div class="inline-flex flex-row flex-wrap items-center justify-start">
                   <div class="inline-flex min-w-0 items-center align-middle">
                     <a class="x-username x-username-popover x-focus-outline-offset" style="color:#ff5454;--username-gradient-from:#ff5454;--username-gradient-to:#ff5454" href="${run.weblink.replace("http://", "https://")}">
-                      <span>${players(run)}</span>
+                      ${players(run)}
                     </a>
                   </div>
                 </div>
@@ -544,13 +507,9 @@ const HEADER = "https://www.speedrun.com/api/v1/";
             var display_name = `<span class="xlight ">` + escape(user_name) + `</span>` + `<span class="xdark">` +`</span>`;
           }
 
-          display_name = `<b>${display_name}</b>`;
           if ((user_loc !== null) && ("country" in user_loc)) {
-            
-            
-            display_name = `<span style="white-space:nowrap">`+
-                             display_name +
-                           `</span>`;
+            let cc = user_loc.country.code;
+            display_name = ` <img src="https://www.speedrun.com/images/flags/${cc}.png" class="rounded-sm" height="12" width="18" alt="[${cc}]" style="color: transparent;" data-state="closed" loading="lazy"> <span> ${display_name} </span> `;
           }
           return display_name;
         }
