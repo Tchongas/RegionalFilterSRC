@@ -189,6 +189,8 @@ const HEADER = "https://www.speedrun.com/api/v1/";
           var gameObj = await fetchSRCawait(`games/${abbr}`);
         }
         catch (code) {
+          if (code == 404) {
+            alert(`Sorry we hit a bug! Invalid game: ${escape(abbr)}`);
           return;
         }
 
