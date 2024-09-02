@@ -513,3 +513,4 @@ const HEADER = "https://www.speedrun.com/api/v1/";
           return display_name;
         }
       }
+    }
