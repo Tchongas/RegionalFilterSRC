@@ -241,7 +241,7 @@ const HEADER = "https://www.speedrun.com/api/v1/";
       }
 
       function players(run) {
-        return run.players.data.map(get_display_name).join("<br>");
+        return run.players.data.map(get_display_name).join("");
       }
 
       function str_time(time) {
@@ -365,13 +365,7 @@ const HEADER = "https://www.speedrun.com/api/v1/";
           <td class="cursor-pointer sticky z-[4] px-0.5 text-left" style="left:var(--cell-0-width)">
             <div class="whitespace-normal py-1">
               <span>
-                <div class="inline-flex flex-row flex-wrap items-center justify-start">
-                  <div class="inline-flex min-w-0 items-center align-middle">
-                    <a class="x-username x-username-popover x-focus-outline-offset" style="color:#ff5454;--username-gradient-from:#ff5454;--username-gradient-to:#ff5454" href="${run.weblink.replace("http://", "https://")}">
-                      ${players(run)}
-                    </a>
-                  </div>
-                </div>
+                ${players(run)}
               </span>
             </div>
           </td>
@@ -505,7 +499,14 @@ const HEADER = "https://www.speedrun.com/api/v1/";
 
           if ((user_loc !== null) && ("country" in user_loc)) {
             let cc = user_loc.country.code;
-            display_name = ` <img src="https://www.speedrun.com/images/flags/${cc}.png" class="rounded-sm" height="12" width="18" alt="[${cc}]" style="color: transparent;" data-state="closed" loading="lazy"> <span> ${display_name} </span> `;
+            display_name = `<div class="inline-flex flex-row flex-wrap items-center justify-start">
+                              <div class="inline-flex min-w-0 items-center align-middle">
+                                <a class="x-username x-username-popover x-focus-outline-offset" style="color:#ff5454;--username-gradient-from:#ff5454;--username-gradient-to:#ff5454">  
+                                  <img src="https://www.speedrun.com/images/flags/${cc}.png" class="rounded-sm" height="12" width="18" alt="[${cc}]" style="color: transparent;" data-state="closed" loading="lazy">  
+                                    <span> ${display_name} </span>
+                                </a>
+                              </div>
+                            </div>`;
           }
           return display_name;
         }
