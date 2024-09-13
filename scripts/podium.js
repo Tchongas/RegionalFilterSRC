@@ -29,7 +29,6 @@ async function processUser(user) {
     const userId = await getUserID(user);
     const placeCounts = await getUserRuns(userId);
     
-    console.log(`User ${user} has ${placeCounts.place1Count} 1st place runs, ${placeCounts.place2Count} 2nd place runs, and ${placeCounts.place3Count} 3rd place runs.`);
     return placeCounts;
     
     // You can use placeCounts.place1Count, placeCounts.place2Count, placeCounts.place3Count later in the code
@@ -37,7 +36,6 @@ async function processUser(user) {
 
 async function getPodiums(user){ 
     const placeCounts = await processUser(user);
-    console.log(placeCounts);
 
     return `<div class="x-panel-shadow rounded-lg bg-panel/panel" id="podiums">
         <div>

@@ -60,7 +60,6 @@ function handleMessage(request, sender, sendResponse) {
     'remove_style': () => toggleFeature('style', removeStyle),
     'get_queue': () => {
       const gameAbbr = getGameAbbr();
-      console.log("test");
       get_queue(gameAbbr, request.queueOptionStart, request.queueOptionEnd);
     }
   };
@@ -68,7 +67,6 @@ function handleMessage(request, sender, sendResponse) {
   // Run functions defined in object
   const selectedPopUpAction = popUpActions[request.action];
   if (selectedPopUpAction) {
-    console.log(selectedPopUpAction)
     selectedPopUpAction();
   }
 }
@@ -88,21 +86,17 @@ function toggleFeature(featureName, actionFunction) {
 function getGameAbbr() {
   const url = window.location.href.split("?")[0]; // Split by '?' and take the first part
   const pathSegments = url.split("/")
-  console.log(pathSegments);
   // If the URL has only 4 segments, return the last segment.
   if (pathSegments.length === 4) {
-    console.log("2");
     return pathSegments[pathSegments.length - 1];
   }
 
   const secondLastSegment = pathSegments[pathSegments.length - 2];
 
   if (secondLastSegment.match(/^[a-z]{2}(?:-[A-Z]{2})?$/)) {
-    console.log("2");
     return pathSegments[pathSegments.length - 1];
    
   }
-  console.log("3");
   return secondLastSegment;
 }
 
@@ -194,7 +188,6 @@ function insertButtonIfNeeded() {
 function isValidUserPage() {
   const currentURL = window.location.href;
   const userPageRegex = /^https:\/\/www\.speedrun\.com\/users\/[^\/]+(\?view=(fullgame|levels))?$/;
-  console.log(userPageRegex.test(currentURL));
   return userPageRegex.test(currentURL);
 }
 
@@ -206,7 +199,6 @@ function getFirstWordInTitle() {
 
 async function addPodiums() {
   const user = getFirstWordInTitle();
-  console.log(user);
 
   //check for duplicate
   const removeElement = document.getElementById('podiums');
@@ -221,13 +213,11 @@ async function addPodiums() {
   if (podiumTargetDiv) {
     const podiumElement = document.createRange().createContextualFragment(podiums);
     podiumTargetDiv.insertBefore(podiumElement, podiumTargetDiv.firstChild);
-    console.log('Podiums added');
   }
 }
 
 function UrlChangeHandler() {
   if (isValidUserPage()) {
-    console.log('user page valid');
     addPodiums();
   }
   else {
@@ -246,7 +236,6 @@ new MutationObserver(() => {
   if (url !== lastUrl) {
     lastUrl = url;
     UrlChangeHandler();
-    console.log('url changed');
   }
 }).observe(document, { childList: true, subtree: true });
 
