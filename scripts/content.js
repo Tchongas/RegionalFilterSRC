@@ -168,7 +168,6 @@ function insertQueueButton() {
   if (targetDiv) {
     targetDiv.prepend(newButton);
   }
-
   const gameAbbr = getGameAbbr();
 
   newButton.addEventListener('click', function(request, sender, sendResponse) {
@@ -189,6 +188,67 @@ function insertButtonIfNeeded() {
     insertQueueButton()
   }
 }
+
+// Podiums fuctions 
+
+function isValidUserPage() {
+  const currentURL = window.location.href;
+  const userPageRegex = /^https:\/\/www\.speedrun\.com\/users\/[^\/]+(\?view=(fullgame|levels))?$/;
+  console.log(userPageRegex.test(currentURL));
+  return userPageRegex.test(currentURL);
+}
+
+function getFirstWordInTitle() {
+  const title = document.title;
+  const words = title.split(' ');
+  return words[0];
+}
+
+async function addPodiums() {
+  const user = getFirstWordInTitle();
+  console.log(user);
+
+  //check for duplicate
+  const removeElement = document.getElementById('podiums');
+  if (removeElement) {
+    removeElement.remove();
+  }
+
+  //Podium is in podium.js
+  podiums = await getPodiums(user);
+
+  const podiumTargetDiv = document.querySelector('.relative.flex.w-full.min-w-0.flex-none.flex-col.flex-nowrap.gap-y-4.lg\\:w-auto.lg\\:flex-auto.lg\\:shrink');
+  if (podiumTargetDiv) {
+    const podiumElement = document.createRange().createContextualFragment(podiums);
+    podiumTargetDiv.insertBefore(podiumElement, podiumTargetDiv.firstChild);
+    console.log('Podiums added');
+  }
+}
+
+function UrlChangeHandler() {
+  if (isValidUserPage()) {
+    console.log('user page valid');
+    addPodiums();
+  }
+  else {
+    const removeElement = document.getElementById('podiums');
+    if (removeElement) {
+      removeElement.remove();
+    }
+  }
+}
+
+UrlChangeHandler();
+
+let lastUrl = location.href;
+new MutationObserver(() => {
+  const url = location.href;
+  if (url !== lastUrl) {
+    lastUrl = url;
+    UrlChangeHandler();
+    console.log('url changed');
+  }
+}).observe(document, { childList: true, subtree: true });
 
 // Create a new MutationObserver instance
 const observer = new MutationObserver(function(mutationsList, observer) {
