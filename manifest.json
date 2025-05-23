@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.speedrun.com/*"],
-      "js": ["scripts/podium.js", "scripts/content.js", "scripts/queue.js", "scripts/sidebar.js", "scripts/countryFilter.js","scripts/utils.js"]
+      "js": ["scripts/podium.js", "scripts/fakeRunners.js", "scripts/content.js", "scripts/queue.js", "scripts/sidebar.js","scripts/utils.js", "scripts/countryFilter.js"]
     }
   ]
 }

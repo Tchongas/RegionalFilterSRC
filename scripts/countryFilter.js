@@ -1,7 +1,7 @@
 // --- Configuration & Constants ---
 const API_BASE_URL = "https://www.speedrun.com/api/v1";
 const MAX_RUNS_PER_REQUEST = 100; // Default for initial request, API pagination links will dictate subsequent 'max'
-const REQUEST_DELAY_MS = 1100; // Delay between paginated requests (slightly over 1 second to be safe with 60-100 req/min limits)
+const REQUEST_DELAY_MS = 1500; // Delay between paginated requests (slightly over 1 second to be safe with 60-100 req/min limits)
 
 // --- Helper Functions ---
 
@@ -207,7 +207,7 @@ async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, cou
     while (isInitialRequest || nextUrl) {
         let currentResponseData;
         if (isInitialRequest) {
-            const endpoint = `/leaderboards/${gameId}/category/${targetCategoryId}`;
+            const endpoint = `/leaderboards/${targetCategoryId}`;
             const initialParams = {
                 embed: "players", 
                 max: String(MAX_RUNS_PER_REQUEST) // Ensure max is a string if API expects it
@@ -229,6 +229,7 @@ async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, cou
 
         if (!currentResponseData || !currentResponseData.data) {
             console.error("Failed to fetch leaderboard data or data object is missing in response.");
+            displayInfoOnTable(getFakePlayer("error"));
             break; 
         }
         
@@ -258,9 +259,9 @@ async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, cou
                     playerData.location.country.code && playerData.location.country.code.toLowerCase() === countryCode) {
 
                     const runDetails = {
+                        index: runEntry.place,
                         runId: run.id,
                         player: getDisplayName(playerData),
-                        color: playerData["name-style"]["color"]["dark"],
                         timeSeconds: run.times.primary_t, 
                         timeFormatted: run.times.primary, 
                         date: run.date,
@@ -305,16 +306,11 @@ async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, cou
         console.log(`Found ${allFilteredRuns.length} runs matching the criteria.`);
     } else {
         console.log(`No runs found for game "${gameAbbreviation}", category "${targetCategoryId}", subcategories "${targetSubcategoryQuery || 'None'}", and country "${countryCode.toUpperCase()}".`);
+        displayInfoOnTable(getFakePlayer("noPlayer"));
     }
     
     return allFilteredRuns; 
 }
-
-
-// --- Example Usage (for testing in browser console) ---
-
-// This function is assumed to be defined in your extension's environment
-// Example: function getGameAbbr() { return "mc"; /* or dynamically get from page */ }
 
 /**
  * Example callback function to process each run as it's found.
@@ -326,13 +322,6 @@ function handleFoundRunIncrementally(runDetails) {
     displayInfoOnTable(runDetails);
 }
 
-
-async function testFunctions() {
-    console.log("--- Testing filterCountry with incremental callback ---");
-    
-    const celesteRunsCA = await filterCountry("celeste", null, null, "ca", handleFoundRunIncrementally);
-    console.log(`Test Function: Total Celeste runs from CA collected at the end: ${celesteRunsCA.length}`);
-}
 
 async function countryFilter(categoryId, subcategoryQuery, countryCode, onRunCallback) {
     clearTable();
@@ -348,7 +337,35 @@ async function countryFilter(categoryId, subcategoryQuery, countryCode, onRunCal
         console.error("Could not get game abbreviation via getGameAbbr(). Please ensure it's available.");
         return [];
     }
-    
+    apiUrl = await categoryCheck(gameAbbr);
     // Pass the callback to filterCountry
-    return await filterCountry(gameAbbr, categoryId, subcategoryQuery, countryCode, handleFoundRunIncrementally);
+    return await filterCountry(gameAbbr, apiUrl, subcategoryQuery, countryCode, handleFoundRunIncrementally);
+}
+
+
+async function categoryCheck(gameAbbrv) {
+    const url = new URL(window.location.href);
+    const searchParams = new URLSearchParams(url.search);
+
+    const fullCategory = searchParams.get('x'); // Example: mkeyl926-r8rg67rn.21d4zvp1-wl33kewl.21go6e6q
+    if (!fullCategory) return null;
+
+    // Split category from variables
+    const parts = fullCategory.split('-');
+    const categoryId = parts[0]; // e.g., "mkeyl926"
+    const variables = parts.slice(1); // e.g., ["r8rg67rn.21d4zvp1", "wl33kewl.21go6e6q"]
+
+    // Turn into query string: var-r8rg67rn=21d4zvp1&var-wl33kewl=21go6e6q
+    const variableParams = variables
+        .map(v => {
+            const [varId, valueId] = v.split('.');
+            return `var-${varId}=${valueId}`;
+        })
+        .join('&');
+
+    // Construct full API URL
+    const apiUrl = `${gameAbbrv}/category/${categoryId}` +
+                   (variableParams ? `?${variableParams}` : '');
+
+    return apiUrl;
 }

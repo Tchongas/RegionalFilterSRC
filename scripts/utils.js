@@ -14,7 +14,7 @@ function displayInfoOnTable(runDetails) {
     }
 
     const formattedTime = formatTime(runDetails.timeSeconds);
-    const runLink = `/mc/runs/${runDetails.runId}`;
+    const runLink = `/${runDetails.game}/runs/${runDetails.runId}`;
     const playerLink = `/users/${runDetails.player}`;
 
     const tr = document.createElement('tr');
@@ -23,12 +23,7 @@ function displayInfoOnTable(runDetails) {
         <td class="sticky left-0 z-[4]">
             <a class="px-1.5 py-1" tabindex="-1" href="${runLink}">
                 <span class="inline-flex flex-nowrap items-center justify-start gap-1">
-                    <div class="relative h-4 w-4" data-state="closed">
-                        <img alt="First place" loading="lazy" decoding="async" data-nimg="fill"
-                             class="object-contain"
-                             style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent"
-                             src="/static/theme/2wo6q4we/1st.png?v=369dc56">
-                    </div>
+                    <span>${runDetails.index}</span>
                 </span>
             </a>
         </td>
@@ -51,12 +46,11 @@ function displayInfoOnTable(runDetails) {
             </div>
         </td>
         <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span>${formattedTime}</span></a></td>
-        <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span>${formattedTime}</span></a></td>
         <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span><span class="x-timestamp" data-state="closed">${runDetails.date}</span></span></a></td>
-        <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span><span>1.16.1</span></span></a></td>
-        <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span><span>Easy</span></span></a></td>
-        <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span><span>F3</span></span></a></td>
-        <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span><span>Modded</span></span></a></td>
+        <td><a class="px-1.5 py-1" tabindex="-1" href=""><span></span></a></td>
+        <td><a class="px-1.5 py-1" tabindex="-1" href=""><span></span></a></td>
+        <td><a class="px-1.5 py-1" tabindex="-1" href=""><span></span></a></td>
+        <td><a class="px-1.5 py-1" tabindex="-1" href=""><span></span></a></td>
     </tr>`;
 
     table.appendChild(tr);
@@ -112,3 +106,4 @@ function getDisplayName(user) {
 
     return displayName;
 }
+
