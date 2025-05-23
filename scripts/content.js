@@ -54,7 +54,7 @@ chrome.runtime.onMessage.addListener(handleMessage);
 
 function handleMessage(request, sender, sendResponse) {
   const popUpActions = {
-    'remove_elements': () => countryFilter(request.imageFilter),
+    'remove_elements': () => countryFilter(null,null,request.imageFilter),
     'undo_delete': restoreRun,
     'remove_sidebar': () => toggleFeature('sidebar', removeSections),
     'remove_style': () => toggleFeature('style', removeStyle),
@@ -136,7 +136,7 @@ function insertButton() {
     } else {
       text = country.toLowerCase();
       restoreRun()
-      countryFilter(text)
+      countryFilter(null,null,country,null)
     }
   });
 }

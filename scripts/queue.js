@@ -98,7 +98,7 @@ const HEADER = "https://www.speedrun.com/api/v1/";
           startPoint = 0;
         }
         if (!endPoint) {
-          endPoint = 100;
+          endPoint = 500;
         }
         
         document.getElementsByTagName('tbody')[0].innerHTML = `<tr class="cursor-pointer x-focus-inner whitespace-nowrap" tabindex="0">
@@ -314,7 +314,7 @@ const HEADER = "https://www.speedrun.com/api/v1/";
                   <div class="inline-flex flex-row flex-wrap items-center justify-start">
                     <div class="inline-flex min-w-0 items-center align-middle">
                       <a class="x-username x-username-popover x-focus-outline-offset" style="color:#ff5454;--username-gradient-from:#ff5454;--username-gradient-to:#ff5454" href="">
-                        <span>END REACHED</span>
+                        <span>END</span>
                       </a>
                     </div>
                   </div>
@@ -337,7 +337,6 @@ const HEADER = "https://www.speedrun.com/api/v1/";
                 <span>
                   <span>
                     <span>
-                      <span>Open the popup for more</span>
                     </span>
                   </span>
                 </span>
