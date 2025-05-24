@@ -17,6 +17,7 @@ const errorPlayer = `<div class="inline-flex flex-row flex-wrap items-center jus
         </div>`
 
 const errorMessage = {
+    id: "error",
     index: "X",
     runId: "X",
     player: errorPlayer,
@@ -31,6 +32,7 @@ const errorMessage = {
 };
 
 const noPlayerMessage = {
+    id: "noPlayer",
     index: "X",
     runId: "X",
     player: errorPlayer,
@@ -44,11 +46,29 @@ const noPlayerMessage = {
     comment: "comment"
 };
 
+const loadingMessage = {
+    id: "loading",
+    index: "X",
+    runId: "X",
+    player: loadingPlayer,
+    timeSeconds: "0000000",
+    timeFormatted: "00:00:00", 
+    date: "Loading...",
+    weblink: "null",
+    country: "br",
+    game: "error",
+    category: "error",
+    comment: "comment"
+}
+
 function getFakePlayer(player) {
     if (player === "error") {
         return errorMessage;
     }
     if (player === "noPlayer") {
         return noPlayerMessage;
+    }
+    if (player === "loading") {
+        return loadingMessage;
     }
 }

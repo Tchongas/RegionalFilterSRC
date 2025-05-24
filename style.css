@@ -72,3 +72,19 @@ body {
     font-size: 18px;
     font-weight:600;
 }
+.link-container{
+    margin-top: 10px;
+
+}
+.link-label{
+    all: unset;
+    text-decoration: none;
+    color: orange;
+    font-weight:500;
+    font-size: 14px;
+}
+
+.link-label:hover{
+    color: rgb(255, 204, 109);
+    cursor: pointer;
+}

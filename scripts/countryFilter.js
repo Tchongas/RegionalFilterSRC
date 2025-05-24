@@ -199,6 +199,7 @@ async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, cou
     }
 
     console.log(`Fetching runs for Game: ${gameAbbreviation} (ID: ${gameId}), Category ID: ${targetCategoryId}, Subcategories: "${targetSubcategoryQuery || 'None'}", Country: ${countryCode.toUpperCase()}`);
+    displayInfoOnTable(getFakePlayer("loading"));
 
     let allFilteredRuns = [];
     let nextUrl = null; 
@@ -259,6 +260,7 @@ async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, cou
                     playerData.location.country.code && playerData.location.country.code.toLowerCase() === countryCode) {
 
                     const runDetails = {
+                        id: runEntry.place,
                         index: runEntry.place,
                         runId: run.id,
                         player: getDisplayName(playerData),
@@ -319,6 +321,7 @@ async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, cou
 function handleFoundRunIncrementally(runDetails) {
     console.log(`INCREMENTAL: Player: ${runDetails.player}, Time: ${runDetails.timeFormatted}, Country: ${runDetails.country}, Link: ${runDetails.weblink}`);
     console.log("rundetail",runDetails);
+    removeRun("loading");
     displayInfoOnTable(runDetails);
 }
 

@@ -15,9 +15,9 @@ function displayInfoOnTable(runDetails) {
 
     const formattedTime = formatTime(runDetails.timeSeconds);
     const runLink = `/${runDetails.game}/runs/${runDetails.runId}`;
-    const playerLink = `/users/${runDetails.player}`;
 
     const tr = document.createElement('tr');
+    tr.id = runDetails.id;
     tr.innerHTML = `
     <tr class="cursor-pointer x-focus-inner whitespace-nowrap" tabindex="0">
         <td class="sticky left-0 z-[4]">
@@ -108,3 +108,9 @@ function getDisplayName(user) {
     return displayName;
 }
 
+function removeRun(id) {
+    const fakeRun = document.getElementById(id);
+    if (fakeRun) {
+        fakeRun.remove();
+    }
+}
