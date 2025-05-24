@@ -47,10 +47,11 @@ function displayInfoOnTable(runDetails) {
         </td>
         <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span>${formattedTime}</span></a></td>
         <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span><span class="x-timestamp" data-state="closed">${runDetails.date}</span></span></a></td>
-        <td><a class="px-1.5 py-1" tabindex="-1" href=""><span></span></a></td>
-        <td><a class="px-1.5 py-1" tabindex="-1" href=""><span></span></a></td>
-        <td><a class="px-1.5 py-1" tabindex="-1" href=""><span></span></a></td>
-        <td><a class="px-1.5 py-1" tabindex="-1" href=""><span></span></a></td>
+        <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span></span></a></td>
+        <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span></span></a></td>
+        <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span></span></a></td>
+        <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span></span></a></td>
+        <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span></span></a></td>
     </tr>`;
 
     table.appendChild(tr);

@@ -2,7 +2,7 @@ body {
     background-color: #191C1B;
     color: aliceblue;
     width: 400px;
-    height: 600px;
+    height: 500px;
     text-align: center;
 }
 
@@ -70,4 +70,5 @@ body {
 
 .layout-label{
     font-size: 18px;
+    font-weight:600;
 }

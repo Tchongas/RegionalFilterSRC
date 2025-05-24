@@ -207,7 +207,7 @@ async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, cou
     while (isInitialRequest || nextUrl) {
         let currentResponseData;
         if (isInitialRequest) {
-            const endpoint = `/leaderboards/${targetCategoryId}`;
+            const endpoint = `/leaderboards/${gameId}/category/${targetCategoryId}`;
             const initialParams = {
                 embed: "players", 
                 max: String(MAX_RUNS_PER_REQUEST) // Ensure max is a string if API expects it
@@ -364,7 +364,7 @@ async function categoryCheck(gameAbbrv) {
         .join('&');
 
     // Construct full API URL
-    const apiUrl = `${gameAbbrv}/category/${categoryId}` +
+    const apiUrl = `${categoryId}` +
                    (variableParams ? `?${variableParams}` : '');
 
     return apiUrl;

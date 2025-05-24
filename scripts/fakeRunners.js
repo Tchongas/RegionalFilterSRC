@@ -36,7 +36,7 @@ const noPlayerMessage = {
     player: errorPlayer,
     timeSeconds: "0000000",
     timeFormatted: "00:00:00", 
-    date: "No player found",
+    date: "No players? click on a category",
     weblink: "null",
     country: "br",
     game: "error",
