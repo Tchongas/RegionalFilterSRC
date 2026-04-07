@@ -121,7 +121,7 @@ function insertButton() {
 
   newButton.appendChild(spanElement);
 
-  var targetDiv = document.querySelector('.contents.grow.flex-row.flex-wrap.items-center.justify-end.gap-2.sm\\:flex');
+  var targetDiv = document.querySelector('.contents.grow.flex-row.flex-wrap.items-center.justify-end');
 
   if (targetDiv) {
     targetDiv.prepend(newButton);
@@ -157,7 +157,7 @@ function insertQueueButton() {
 
   newButton.appendChild(spanElement);
 
-  var targetDiv = document.querySelector('.contents.grow.flex-row.flex-wrap.items-center.justify-end.gap-2.sm\\:flex');
+  var targetDiv = document.querySelector('.contents.grow.flex-row.flex-wrap.items-center.justify-end');
 
   if (targetDiv) {
     targetDiv.prepend(newButton);
