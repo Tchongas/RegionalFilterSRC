@@ -1,7 +1,7 @@
 const loadingPlayer = `<div class="inline-flex flex-row flex-wrap items-center justify-start">
             <div class="inline-flex min-w-0 items-center align-middle">
-                <a class="x-username x-username-popover x-focus-outline-offset" style="color:"#fff"}">
-                    <img src="https://www.speedrun.com/images/flags/br.png" class="rounded-sm" height="12" width="18" alt="[brasil!!!]" style="color: transparent;" loading="lazy">
+                <a class="x-username x-username-popover x-focus-outline-offset" style="color:#fff">
+                    <img src="https://www.speedrun.com/images/flags/br.png" class="rounded-sm" height="12" width="18" alt="[loading]" style="color: transparent;" loading="lazy">
                     <span> Loading... </span>
                 </a>
             </div>
@@ -9,8 +9,8 @@ const loadingPlayer = `<div class="inline-flex flex-row flex-wrap items-center j
 
 const errorPlayer = `<div class="inline-flex flex-row flex-wrap items-center justify-start">
             <div class="inline-flex min-w-0 items-center align-middle">
-                <a class="x-username x-username-popover x-focus-outline-offset" style="color:"#fff"}">
-                    <img src="https://www.speedrun.com/images/flags/br.png" class="rounded-sm" height="12" width="18" alt="[brasil!!!]" style="color: transparent;" loading="lazy">
+                <a class="x-username x-username-popover x-focus-outline-offset" style="color:#fff">
+                    <img src="https://www.speedrun.com/images/flags/br.png" class="rounded-sm" height="12" width="18" alt="[error]" style="color: transparent;" loading="lazy">
                     <span> ERROR </span>
                 </a>
             </div>

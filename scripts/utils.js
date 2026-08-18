@@ -18,8 +18,9 @@ function displayInfoOnTable(runDetails) {
 
     const tr = document.createElement('tr');
     tr.id = runDetails.id;
+    tr.className = 'cursor-pointer x-focus-inner whitespace-nowrap';
+    tr.tabIndex = 0;
     tr.innerHTML = `
-    <tr class="cursor-pointer x-focus-inner whitespace-nowrap" tabindex="0">
         <td class="sticky left-0 z-[4]">
             <a class="px-1.5 py-1" tabindex="-1" href="${runLink}">
                 <span class="inline-flex flex-nowrap items-center justify-start gap-1">
@@ -52,7 +53,7 @@ function displayInfoOnTable(runDetails) {
         <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span></span></a></td>
         <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span></span></a></td>
         <td><a class="px-1.5 py-1" tabindex="-1" href="${runLink}"><span></span></a></td>
-    </tr>`;
+    `;
 
     table.appendChild(tr);
 }

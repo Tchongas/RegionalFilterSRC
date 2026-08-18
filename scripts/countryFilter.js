@@ -160,9 +160,10 @@ async function getDefaultCategory(gameAbbreviation) {
  * @param {string} countryCode - The 2-letter country code to filter by (e.g., "br", "us").
  * @param {function} [onRunFoundCallback=null] - Optional callback function executed for each matching run.
  * Receives the run object as an argument.
+ * @param {string|null} [levelId=null] - Optional level ID for individual-level leaderboards.
  * @returns {Promise<Array<object>>} A promise that resolves to an array of all filtered run objects.
  */
-async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, countryCode, onRunFoundCallback) {
+async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, countryCode, onRunFoundCallback, levelId = null) {
     if (!countryCode || typeof countryCode !== 'string' || countryCode.trim().length !== 2) {
         console.error("Invalid or missing country code. Please provide a 2-letter code (e.g., 'us', 'br').");
         return []; // Return empty array on error
@@ -175,6 +176,7 @@ async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, cou
         return [];
     }
 
+    let targetLevelId = levelId;
     let targetCategoryId = categoryId;
     let targetSubcategoryQuery = subcategoryQuery === null ? null : (subcategoryQuery || ""); // Distinguish null from empty string
 
@@ -198,17 +200,23 @@ async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, cou
         return [];
     }
 
-    console.log(`Fetching runs for Game: ${gameAbbreviation} (ID: ${gameId}), Category ID: ${targetCategoryId}, Subcategories: "${targetSubcategoryQuery || 'None'}", Country: ${countryCode.toUpperCase()}`);
+    const levelLog = targetLevelId ? `, Level ID: ${targetLevelId}` : '';
+    console.log(`Fetching runs for Game: ${gameAbbreviation} (ID: ${gameId}), Category ID: ${targetCategoryId}${levelLog}, Subcategories: "${targetSubcategoryQuery || 'None'}", Country: ${countryCode.toUpperCase()}`);
     displayInfoOnTable(getFakePlayer("loading"));
 
     let allFilteredRuns = [];
-    let nextUrl = null; 
+    let nextUrl = null;
     let isInitialRequest = true;
 
     while (isInitialRequest || nextUrl) {
         let currentResponseData;
         if (isInitialRequest) {
-            const endpoint = `/leaderboards/${gameId}/category/${targetCategoryId}`;
+            let endpoint;
+            if (targetLevelId) {
+                endpoint = `/leaderboards/${gameId}/level/${targetLevelId}/${targetCategoryId}`;
+            } else {
+                endpoint = `/leaderboards/${gameId}/category/${targetCategoryId}`;
+            }
             const initialParams = {
                 embed: "players", 
                 max: String(MAX_RUNS_PER_REQUEST) // Ensure max is a string if API expects it
@@ -303,8 +311,6 @@ async function filterCountry(gameAbbreviation, categoryId, subcategoryQuery, cou
 
     if (allFilteredRuns.length > 0) {
         console.log(`--- Total Filtered Runs (at the end) for ${gameAbbreviation} / ${countryCode.toUpperCase()} ---`);
-        // This final log can be removed if incremental updates are sufficient
-        // allFilteredRuns.forEach(run => console.log(`Player: ${run.player}, Time: ${run.timeFormatted}, Date: ${run.date}, Link: ${run.weblink}`));
         console.log(`Found ${allFilteredRuns.length} runs matching the criteria.`);
     } else {
         console.log(`No runs found for game "${gameAbbreviation}", category "${targetCategoryId}", subcategories "${targetSubcategoryQuery || 'None'}", and country "${countryCode.toUpperCase()}".`);
@@ -340,9 +346,12 @@ async function countryFilter(categoryId, subcategoryQuery, countryCode, onRunCal
         console.error("Could not get game abbreviation via getGameAbbr(). Please ensure it's available.");
         return [];
     }
-    apiUrl = await categoryCheck(gameAbbr);
+    const categoryInfo = await categoryCheck(gameAbbr);
+    const targetLevelId = categoryInfo ? categoryInfo.levelId : null;
+    const targetCategoryId = categoryInfo ? categoryInfo.categoryId : null;
+    const targetSubcategoryQuery = categoryInfo ? categoryInfo.subcategoryQuery : null;
     // Pass the callback to filterCountry
-    return await filterCountry(gameAbbr, apiUrl, subcategoryQuery, countryCode, handleFoundRunIncrementally);
+    return await filterCountry(gameAbbr, targetCategoryId, targetSubcategoryQuery, countryCode, handleFoundRunIncrementally, targetLevelId);
 }
 
 
@@ -353,22 +362,32 @@ async function categoryCheck(gameAbbrv) {
     const fullCategory = searchParams.get('x'); // Example: mkeyl926-r8rg67rn.21d4zvp1-wl33kewl.21go6e6q
     if (!fullCategory) return null;
 
-    // Split category from variables
     const parts = fullCategory.split('-');
-    const categoryId = parts[0]; // e.g., "mkeyl926"
-    const variables = parts.slice(1); // e.g., ["r8rg67rn.21d4zvp1", "wl33kewl.21go6e6q"]
+    let levelId = null;
+    let categoryId;
+    let variableParts;
 
-    // Turn into query string: var-r8rg67rn=21d4zvp1&var-wl33kewl=21go6e6q
-    const variableParams = variables
+    const first = parts[0];
+    if (first.startsWith('l_')) {
+        // Level leaderboard format: l_<levelId>-<categoryId>-<var1>.<val1>-...
+        levelId = first.slice(2);
+        categoryId = parts[1] || null;
+        variableParts = parts.slice(2);
+    } else {
+        // Full-game category format: <categoryId>-<var1>.<val1>-...
+        categoryId = first;
+        variableParts = parts.slice(1);
+    }
+
+    const subcategoryQueryParts = variableParts
         .map(v => {
             const [varId, valueId] = v.split('.');
             return `var-${varId}=${valueId}`;
-        })
-        .join('&');
+        });
 
-    // Construct full API URL
-    const apiUrl = `${categoryId}` +
-                   (variableParams ? `?${variableParams}` : '');
-
-    return apiUrl;
+    return {
+        levelId: levelId,
+        categoryId: categoryId,
+        subcategoryQuery: subcategoryQueryParts.join('&')
+    };
 }

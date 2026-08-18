@@ -1,18 +1,33 @@
 async function getUserID(user) {
     const response = await fetch(`https://www.speedrun.com/api/v1/users?lookup=${user}`);
+    if (!response.ok) {
+      console.error(`Failed to look up user "${user}": ${response.status}`);
+      return null;
+    }
     const data = await response.json();
-    return data.data[0].id; // Assuming the first item is the correct user
+    if (!data.data || data.data.length === 0) {
+      console.error(`User "${user}" not found.`);
+      return null;
+    }
+    return data.data[0].id;
   }
-  
+
   async function getUserRuns(userId) {
+    if (!userId) {
+      return { place1Count: 0, place2Count: 0, place3Count: 0 };
+    }
     const response = await fetch(`https://www.speedrun.com/api/v1/users/${userId}/personal-bests?top=3`);
+    if (!response.ok) {
+      console.error(`Failed to fetch runs for user ID "${userId}": ${response.status}`);
+      return { place1Count: 0, place2Count: 0, place3Count: 0 };
+    }
     const data = await response.json();
-  
+
     let place1Count = 0;
     let place2Count = 0;
     let place3Count = 0;
-  
-    data.data.forEach(run => {
+
+    (data.data || []).forEach(run => {
       if (run.place === 1) {
         place1Count++;
       } else if (run.place === 2) {
@@ -21,21 +36,22 @@ async function getUserID(user) {
         place3Count++;
       }
     });
-  
+
     return { place1Count, place2Count, place3Count };
   }
 
 async function processUser(user) {
     const userId = await getUserID(user);
     const placeCounts = await getUserRuns(userId);
-    
+
     return placeCounts;
-    
-    // You can use placeCounts.place1Count, placeCounts.place2Count, placeCounts.place3Count later in the code
   }
 
-async function getPodiums(user){ 
+async function getPodiums(user){
     const placeCounts = await processUser(user);
+    if (!placeCounts) {
+      return '';
+    }
 
     return `<div class="x-panel-shadow rounded-lg bg-panel/panel" id="podiums">
         <div>
@@ -53,14 +69,14 @@ async function getPodiums(user){
                         <div class="min-w-0 flex flex-wrap items-center justify-start">
                             <div class="sm:w-48 flex flex-wrap items-center justify-start gap-2 pb-2 font-title text-sm font-bold sm:px-2 sm:text-base ">
                                 <div class="relative h-8 w-8" data-state="closed">
-                                    <img alt="Third place" loading="lazy" decoding="async" data-nimg="fill" class="object-contain" style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent" src="/images/1st.png">
-                                </div> 
+                                    <img alt="First place" loading="lazy" decoding="async" data-nimg="fill" class="object-contain" style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent" src="/images/1st.png">
+                                </div>
                                 <span>1st Place: ${placeCounts.place1Count}</span>
                             </div>
                             <div class="sm:w-48 flex flex-wrap items-center justify-start gap-2 pb-2 font-title text-sm font-bold sm:px-2 sm:text-base ">
                                 <div class="relative h-8 w-8" data-state="closed">
-                                    <img alt="Third place" loading="lazy" decoding="async" data-nimg="fill" class="object-contain" style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent" src="/images/2nd.png">
-                                </div> 
+                                    <img alt="Second place" loading="lazy" decoding="async" data-nimg="fill" class="object-contain" style="position:absolute;height:100%;width:100%;left:0;top:0;right:0;bottom:0;color:transparent" src="/images/2nd.png">
+                                </div>
                                 <span>2nd Place: ${placeCounts.place2Count}</span>
                             </div>
                             <div class="sm:w-48 flex flex-wrap items-center justify-start gap-2 pb-2 font-title text-sm font-bold sm:px-2 sm:text-base ">
